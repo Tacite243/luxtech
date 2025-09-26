@@ -1,5 +1,6 @@
 import Footer from "@/components/Footer";
 import Navbar from "@/components/Navbar";
+import ScrollToTopButton from "@/components/ScrollToTopButton";
 
 
 export default function PublicLayout({
@@ -14,6 +15,7 @@ export default function PublicLayout({
                 {children}
             </main>
             <Footer />
+            <ScrollToTopButton />
         </div>
     );
 }
