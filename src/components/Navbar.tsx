@@ -6,7 +6,7 @@ import { usePathname } from 'next/navigation';
 // Liste des liens pour une gestion plus simple
 const navLinks = [
   { name: 'Accueil', href: '/' },
-  { name: 'À Propos', href: '/a-propos' },
+  { name: 'À Propos', href: '/about' },
   { name: 'Services', href: '/services' },
   { name: 'Projets', href: '/projets' },
   { name: 'Contact', href: '/contact' },
