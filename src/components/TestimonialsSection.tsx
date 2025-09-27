@@ -64,7 +64,7 @@ export default function TestimonialsSection() {
         <motion.section
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            // viewport={{ once: true, amount: 0.2 }}
             variants={containerVariants}
             className="bg-[#f8f9fa] py-16 md:py-24 overflow-hidden"
         >
@@ -74,7 +74,7 @@ export default function TestimonialsSection() {
                     <h2 className="text-3xl md:text-4xl font-bold text-[#000000]">Témoignages</h2>
                     <div className="w-20 h-1 bg-[#FF0000] my-4 mx-auto" />
                     <p className="text-lg text-[#6b7280]">
-                        La confiance et la satisfaction de nos clients sont notre plus grande fierté. Découvrez ce qu'ils disent de notre collaboration.
+                        La confiance et la satisfaction de nos clients sont notre plus grande fierté. Découvrez ce qu&apos;ils disent de notre collaboration.
                     </p>
                 </motion.div>
 

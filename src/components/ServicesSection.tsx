@@ -34,7 +34,7 @@ export default function ServicesSection() {
         <motion.section
             initial="hidden"
             whileInView="visible"
-            viewport={{ once: true, amount: 0.2 }}
+            // viewport={{ once: true, amount: 0.2 }}
             variants={containerVariants}
             className="bg-[#f8f9fa] py-16 md:py-24"
         >

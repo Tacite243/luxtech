@@ -26,7 +26,7 @@ export default function GetAQuote() {
     <motion.section
       initial="hidden"
       whileInView="visible"
-      viewport={{ once: true, amount: 0.2 }}
+      // viewport={{ once: true, amount: 0.2 }}
       variants={containerVariants}
       className="bg-[#FFFFFF] text-[#111827] py-16 md:py-24"
     >
@@ -39,10 +39,10 @@ export default function GetAQuote() {
             </h2>
             <div className="w-20 h-1 bg-[#FF0000] mb-6" />
             <p className="text-lg text-[#4b5563] mb-4">
-              Notre objectif est de vous offrir un service fiable, efficace et durable. En nous faisant confiance, vous gagnez non seulement du temps, mais aussi la garantie d'un travail bien fait, avec un suivi attentif et une réelle valeur ajoutée.
+              Notre objectif est de vous offrir un service fiable, efficace et durable. En nous faisant confiance, vous gagnez non seulement du temps, mais aussi la garantie d&apos;un travail bien fait, avec un suivi attentif et une réelle valeur ajoutée.
             </p>
             <p className="text-[#6b7280]">
-              Choisir LuxTech Services, c'est opter pour la fiabilité, l'innovation et la satisfaction. Remplissez le formulaire pour obtenir votre devis personnalisé.
+              Choisir LuxTech Services, c&apos;est opter pour la fiabilité, l&apos;innovation et la satisfaction. Remplissez le formulaire pour obtenir votre devis personnalisé.
             </p>
           </motion.div>
 

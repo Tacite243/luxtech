@@ -69,7 +69,7 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-lg">Contactez-Nous</h4>
             <p>
-              Pour toute question ou demande de devis, n'hésitez pas à nous contacter. Nous sommes là pour vous aider à réaliser vos projets.
+              Pour toute question ou demande de devis, n&apos;hésitez pas à nous contacter. Nous sommes là pour vous aider à réaliser vos projets.
             </p>
           </div>
 

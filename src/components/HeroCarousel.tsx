@@ -90,7 +90,7 @@ export default function HeroSection() {
                     // Texte en blanc cassé (#e5e7eb) pour être plus doux à l'oeil
                     className="mt-6 max-w-2xl text-lg text-[#e5e7eb]"
                 >
-                    Notre entreprise allie expertise technique et créativité pour offrir des services complets en construction, électricité et design d'intérieur.
+                    Notre entreprise allie expertise technique et créativité pour offrir des services complets en construction, électricité et design d&apos;intérieur.
                 </motion.p>
                 <motion.button
                     initial={{ opacity: 0, y: 20 }}
