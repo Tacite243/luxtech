@@ -4,6 +4,7 @@ import { useState } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { Plus, Link as LinkIcon } from 'lucide-react';
+import { detailedProjectsData } from '@/lib/project-data';
 
 // --- Type Definition for Props ---
 interface ProjectsSectionProps {
@@ -11,17 +12,7 @@ interface ProjectsSectionProps {
 }
 
 // --- Données des Projets ---
-const projectsData = [
-    { id: 1, title: 'Résidence Moderne', category: 'Construction', imageUrl: '/img/projects/construction-1.jpg' },
-    { id: 2, title: 'Rénovation de Cuisine', category: 'Rénovation', imageUrl: '/img/projects/remodeling-1.jpg' },
-    { id: 3, title: 'Système Électrique Commercial', category: 'Électricité', imageUrl: '/img/projects/repairs-1.jpg' },
-    { id: 4, title: 'Design Intérieur Loft', category: 'Design', imageUrl: '/img/projects/design-1.jpg' },
-    { id: 5, title: 'Extension de Maison', category: 'Construction', imageUrl: '/img/projects/construction-2.jpg' },
-    { id: 6, title: 'Mise aux Normes Électriques', category: 'Électricité', imageUrl: '/img/projects/repairs-2.jpg' },
-    { id: 7, title: 'Aménagement de Bureau', category: 'Design', imageUrl: '/img/projects/design-2.jpg' },
-    { id: 8, title: 'Réfection de Salle de Bain', category: 'Rénovation', imageUrl: '/img/projects/remodeling-2.jpg' },
-    { id: 9, title: 'Fondations & Gros Œuvre', category: 'Construction', imageUrl: '/img/projects/construction-3.jpg' },
-];
+const projectsData = detailedProjectsData;
 
 const categories = ['Tous', 'Construction', 'Rénovation', 'Électricité', 'Design'];
 
@@ -96,7 +87,7 @@ export default function ProjectsSection({ showTitle = true }: ProjectsSectionPro
                                 className="relative group overflow-hidden rounded-lg shadow-lg"
                             >
                                 <Image
-                                    src={project.imageUrl}
+                                    src={project.mainImage}
                                     alt={`Projet: ${project.title}`}
                                     width={600}
                                     height={400}
@@ -112,8 +103,8 @@ export default function ProjectsSection({ showTitle = true }: ProjectsSectionPro
                                         <h4 className="text-xl font-bold">{project.title}</h4>
                                         <p className="text-sm text-gray-200">{project.category}</p>
                                         <div className="flex gap-3 mt-4">
-                                            <a href={project.imageUrl} title="Agrandir" className="bg-[#FF0000] p-2 rounded-full hover:bg-[#D90000] transition-colors"><Plus size={20} /></a>
-                                            <a href="#" title="Voir les détails" className="bg-[#FF0000] p-2 rounded-full hover:bg-[#D90000] transition-colors"><LinkIcon size={20} /></a>
+                                            <a href={project.mainImage} title="Agrandir" className="bg-[#FF0000] p-2 rounded-full hover:bg-[#D90000] transition-colors"><Plus size={20} /></a>
+                                            <a href={`/projets/${project.id}`} title="Voir les détails" className="bg-[#FF0000] p-2 rounded-full hover:bg-[#D90000] transition-colors"><LinkIcon size={20} /></a>
                                         </div>
                                     </motion.div>
                                 </div>
