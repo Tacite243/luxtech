@@ -5,8 +5,12 @@ import { motion, AnimatePresence, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { Plus, Link as LinkIcon } from 'lucide-react';
 
-// --- Données des Projets ---
+// --- Type Definition for Props ---
+interface ProjectsSectionProps {
+    showTitle?: boolean;
+}
 
+// --- Données des Projets ---
 const projectsData = [
     { id: 1, title: 'Résidence Moderne', category: 'Construction', imageUrl: '/img/projects/construction-1.jpg' },
     { id: 2, title: 'Rénovation de Cuisine', category: 'Rénovation', imageUrl: '/img/projects/remodeling-1.jpg' },
@@ -21,18 +25,19 @@ const projectsData = [
 
 const categories = ['Tous', 'Construction', 'Rénovation', 'Électricité', 'Design'];
 
-// --- Variantes d'Animation ---
+
 const fadeInUp: Variants = {
     hidden: { opacity: 0, y: 30 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: 'easeOut' } }
 };
-
 const containerVariants: Variants = {
     hidden: { opacity: 0 },
     visible: { opacity: 1, transition: { staggerChildren: 0.2 } }
 };
 
-export default function ProjectsSection() {
+
+// Modify the component to accept the new prop
+export default function ProjectsSection({ showTitle = true }: ProjectsSectionProps) {
     const [activeFilter, setActiveFilter] = useState('Tous');
 
     const filteredProjects = activeFilter === 'Tous'
@@ -43,29 +48,30 @@ export default function ProjectsSection() {
         <motion.section
             initial="hidden"
             whileInView="visible"
-            // viewport={{ once: true, amount: 0.2 }}
+            viewport={{ once: true, amount: 0.2 }}
             variants={containerVariants}
             className="bg-[#FFFFFF] py-16 md:py-24"
         >
             <div className="container mx-auto px-6">
-                {/* En-tête de la section */}
-                <motion.div variants={fadeInUp} className="text-center max-w-3xl mx-auto mb-12">
-                    <h2 className="text-3xl md:text-4xl font-bold text-[#000000]">Nos Projets</h2>
-                    <div className="w-20 h-1 bg-[#FF0000] my-4 mx-auto" />
-                    <p className="text-lg text-[#6b7280]">
-                        Découvrez quelques-unes de nos réalisations qui témoignent de notre engagement pour la qualité, l&apos;innovation et la satisfaction de nos clients.
-                    </p>
-                </motion.div>
+                {showTitle && (
+                    <motion.div variants={fadeInUp} className="text-center max-w-3xl mx-auto mb-12">
+                        <h2 className="text-3xl md:text-4xl font-bold text-[#000000]">Nos Projets</h2>
+                        <div className="w-20 h-1 bg-[#FF0000] my-4 mx-auto" />
+                        <p className="text-lg text-[#6b7280]">
+                            Découvrez quelques-unes de nos réalisations qui témoignent de notre engagement pour la qualité, l'innovation et la satisfaction de nos clients.
+                        </p>
+                    </motion.div>
+                )}
 
-                {/* Filtres des projets */}
                 <motion.ul variants={fadeInUp} className="flex justify-center flex-wrap gap-2 md:gap-4 mb-12">
                     {categories.map(category => (
                         <li key={category}>
                             <button
                                 onClick={() => setActiveFilter(category)}
+                                // Updated styles for filters to match the image
                                 className={`px-4 py-2 text-sm md:text-base font-semibold rounded-md transition-colors duration-300 ${activeFilter === category
-                                        ? 'bg-[#FF0000] text-[#FFFFFF]'
-                                        : 'bg-gray-200 text-gray-700 hover:bg-gray-300'
+                                    ? 'text-[#FFC107]' // Active color is now yellow
+                                    : 'text-gray-700 hover:text-[#FFC107]'
                                     }`}
                             >
                                 {category}
@@ -74,7 +80,6 @@ export default function ProjectsSection() {
                     ))}
                 </motion.ul>
 
-                {/* Grille des projets */}
                 <motion.div
                     layout
                     className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6"

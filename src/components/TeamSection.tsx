@@ -5,7 +5,6 @@ import Image from 'next/image';
 import { Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 // --- Données de l'Équipe ---
-// --- Données de l'Équipe (avec descriptions optimisées) ---
 const teamData = [
     {
         name: "Paulin AS NGOBOBO",
@@ -54,7 +53,7 @@ const teamData = [
     {
         name: "Francisca SANGANYI",
         role: "Architecte",
-        imageUrl: "",
+        imageUrl: "/img/team/francisca.jpg",
         bio: "Transforme la vision de nos clients en plans innovants, en créant des espaces qui allient esthétique audacieuse et fonctionnalité.",
         socials: [
             { name: 'Twitter', icon: Twitter, href: '#' },
@@ -64,7 +63,7 @@ const teamData = [
     {
         name: "Beni FUNDI",
         role: "Ingénieur Électricien",
-        imageUrl: "",
+        imageUrl: "/img/team/beni.jpg",
         bio: "Conçoit et supervise nos installations électriques, en intégrant les dernières innovations pour garantir sécurité et performance.",
         socials: [
             { name: 'Twitter', icon: Twitter, href: '#' },
