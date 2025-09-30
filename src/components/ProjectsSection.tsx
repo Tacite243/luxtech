@@ -58,7 +58,7 @@ export default function ProjectsSection({ showTitle = true }: ProjectsSectionPro
                         <h2 className="text-3xl md:text-4xl font-bold text-[#000000]">Nos Projets</h2>
                         <div className="w-20 h-1 bg-[#FF0000] my-4 mx-auto" />
                         <p className="text-lg text-[#6b7280]">
-                            Découvrez quelques-unes de nos réalisations qui témoignent de notre engagement pour la qualité, l'innovation et la satisfaction de nos clients.
+                            Découvrez quelques-unes de nos réalisations qui témoignent de notre engagement pour la qualité, l&apos;innovation et la satisfaction de nos clients.
                         </p>
                     </motion.div>
                 )}
