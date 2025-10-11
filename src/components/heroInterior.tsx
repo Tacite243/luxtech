@@ -28,7 +28,6 @@ export default function HearoInterrior({ title, breadcrumbs }: PageHeaderProps) 
         // La section principale avec l'image de fond et la superposition
         <section
             className="relative bg-cover bg-center bg-no-repeat py-24 md:py-32"
-            // REMPLACEZ CETTE IMAGE PAR CELLE DE VOTRE CHOIX POUR LES EN-TÊTES
             style={{ backgroundImage: "url('/img/breadcrumbs-bg.jpg')" }}
         >
             {/* Superposition sombre pour la lisibilité */}

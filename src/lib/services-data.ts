@@ -1,4 +1,3 @@
-import { HardHat, Zap, Paintbrush, BrainCircuit, Key, Wrench } from 'lucide-react';
 
 // Define the type for a single service
 export type Service = {

@@ -18,7 +18,7 @@ export type Project = {
     } | null;
 };
 
-// NOUVELLES DONNÉES COMPLÈTES POUR TOUS LES PROJETS
+// DONNÉES COMPLÈTES POUR TOUS LES PROJETS
 export const detailedProjectsData: Project[] = [
     {
         id: 1,
