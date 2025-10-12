@@ -21,6 +21,12 @@ const initialState: ContactState = {
     error: null,
 };
 
+// 1. Un type pour la réponse d'erreur attendue de notre API
+// Cela nous aidera à typer l'erreur Axios.
+type ApiErrorData = {
+    errors?: Record<string, string[]>;
+};
+
 
 export const sendContactMessage = createAsyncThunk(
     'contact/sendMessage',
@@ -28,17 +34,18 @@ export const sendContactMessage = createAsyncThunk(
         try {
             const response = await axios.post('/api/contact', formData);
             return response.data;
-        } catch (err: any) {
-            const error: AxiosError<any> = err;
-            if (error.response) {
-                const errorMessage = error.response.data.errors
-                    ? Object.values(error.response.data.errors).flat().join(' ')
-                    : "Une erreur est survenue.";
-                return rejectWithValue(errorMessage);
-            } else {
-                // Erreur de réseau ou autre
-                return rejectWithValue(error.message || 'Une erreur de réseau est survenue.');
+        } catch (err: unknown) {
+            // On vérifie si c'est bien une erreur Axios
+            if (axios.isAxiosError(err)) {
+                // On type l'erreur Axios avec notre type personnalisé `ApiErrorData`
+                const error: AxiosError<ApiErrorData> = err;
+                if (error.response?.data?.errors) {
+                    const errorMessage = Object.values(error.response.data.errors).flat().join(' ');
+                    return rejectWithValue(errorMessage);
+                }
             }
+            // Gérer les erreurs non-Axios ou les erreurs sans message spécifique
+            return rejectWithValue('Une erreur inattendue est survenue.');
         }
     }
 );
@@ -62,9 +69,14 @@ const contactSlice = createSlice({
             .addCase(sendContactMessage.fulfilled, (state) => {
                 state.status = 'succeeded';
             })
-            .addCase(sendContactMessage.rejected, (state, action: PayloadAction<any>) => {
+            .addCase(sendContactMessage.rejected, (state, action: PayloadAction<unknown>) => {
                 state.status = 'failed';
-                state.error = action.payload;
+                // On s'assure que le payload est bien une chaîne avant de l'assigner
+                if (typeof action.payload === 'string') {
+                    state.error = action.payload;
+                } else {
+                    state.error = 'Une erreur inconnue est survenue.';
+                }
             });
     },
 });

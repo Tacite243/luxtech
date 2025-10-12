@@ -106,29 +106,38 @@ export default function ContactForm() {
                         onSubmit={handleSubmit}
                         className="bg-white rounded-2xl p-8 shadow-2xl"
                     >
-                        {/* MODIFIÉ : Remplacement de text-brand-dark */}
                         <h2 className="text-3xl font-bold text-[#111827] mb-6">Envoyez-nous un message</h2>
-                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2"><User className="inline mr-2 text-gray-400" size={18} />Nom Complet</label>
-                                {/* MODIFIÉ : Remplacement des classes de focus */}
-                                <input type="text" name="name" value={formData.name} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24] transition" placeholder="Votre nom" required />
-                            </div>
-                            <div>
-                                <label className="block text-gray-700 font-semibold mb-2"><Mail className="inline mr-2 text-gray-400" size={18} />Email</label>
-                                <input type="email" name="email" value={formData.email} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24] transition" placeholder="votre.email@example.com" required />
-                            </div>
-                        </div>
-                        <div className="mb-6">
-                            <label className="block text-gray-700 font-semibold mb-2"><MessageSquare className="inline mr-2 text-gray-400" size={18} />Sujet</label>
-                            <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24] transition" placeholder="Sujet de votre message" required />
-                        </div>
-                        <div className="mb-8">
-                            <label className="block text-gray-700 font-semibold mb-2"><MessageSquare className="inline mr-2 text-gray-400" size={18} />Message</label>
-                            <textarea name="message" value={formData.message} onChange={handleInputChange} rows={5} className="w-full px-4 py-3 bg-gray-50 border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24] transition" placeholder="Écrivez votre message ici..." required></textarea>
-                        </div>
 
-                        {/* MODIFIÉ : Remplacement des classes de marque par des valeurs hexadécimales */}
+                        {/* --- Amélioration : Définition des classes pour les champs de saisie --- */}
+                        {(() => {
+                            // On définit les classes ici pour ne pas les répéter (principe DRY)
+                            const inputClasses = "w-full px-4 py-3 bg-gray-50 border border-gray-400 text-[#111827] placeholder:text-gray-500 rounded-lg transition duration-300 hover:border-[#FBBF24] focus:outline-none focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24]";
+
+                            return (
+                                <>
+                                    <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                        <div>
+                                            {/* Amélioration : Icône un peu plus visible */}
+                                            <label className="block text-gray-700 font-semibold mb-2"><User className="inline mr-2 text-gray-500" size={18} />Nom Complet</label>
+                                            <input type="text" name="name" value={formData.name} onChange={handleInputChange} className={inputClasses} placeholder="Votre nom" required />
+                                        </div>
+                                        <div>
+                                            <label className="block text-gray-700 font-semibold mb-2"><Mail className="inline mr-2 text-gray-500" size={18} />Email</label>
+                                            <input type="email" name="email" value={formData.email} onChange={handleInputChange} className={inputClasses} placeholder="votre.email@example.com" required />
+                                        </div>
+                                    </div>
+                                    <div className="mb-6">
+                                        <label className="block text-gray-700 font-semibold mb-2"><MessageSquare className="inline mr-2 text-gray-500" size={18} />Sujet</label>
+                                        <input type="text" name="subject" value={formData.subject} onChange={handleInputChange} className={inputClasses} placeholder="Sujet de votre message" required />
+                                    </div>
+                                    <div className="mb-8">
+                                        <label className="block text-gray-700 font-semibold mb-2"><MessageSquare className="inline mr-2 text-gray-500" size={18} />Message</label>
+                                        <textarea name="message" value={formData.message} onChange={handleInputChange} rows={5} className={inputClasses} placeholder="Écrivez votre message ici..." required></textarea>
+                                    </div>
+                                </>
+                            );
+                        })()}
+
                         <motion.button
                             type="submit" disabled={isSubmitting}
                             whileHover={{ scale: isSubmitting ? 1 : 1.02 }}

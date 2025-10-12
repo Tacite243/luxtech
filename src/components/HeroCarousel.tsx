@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Image from 'next/image';
@@ -33,9 +33,13 @@ const slideVariants: Variants = {
 export default function HeroSection() {
     const [[page, direction], setPage] = useState([0, 0]);
 
-    const paginate = (newDirection: number) => {
-        setPage([page + newDirection, newDirection]);
-    };
+    // 2. Envelopper la fonction `paginate` dans useCallback
+    // Elle ne sera recréée que si `page` change.
+    const paginate = useCallback(
+        (newDirection: number) => {
+            setPage([page + newDirection, newDirection]);
+        }, [page]
+    );
 
     const imageIndex = ((page % images.length) + images.length) % images.length;
 
@@ -44,7 +48,7 @@ export default function HeroSection() {
             paginate(1);
         }, 5000);
         return () => clearInterval(interval);
-    }, [page]);
+    }, [paginate]);
 
     return (
         <section className="relative h-screen w-full overflow-hidden bg-[#000000]">
@@ -67,9 +71,9 @@ export default function HeroSection() {
                     />
                 </motion.div>
             </AnimatePresence>
-            
+
             <div className="absolute inset-0 bg-[#000000]/70" />
-            
+
             <div className="relative z-10 flex h-full flex-col items-center justify-center text-center text-[#FFFFFF] px-4">
                 <motion.h1
                     initial={{ opacity: 0, y: 20 }}
