@@ -1,11 +1,14 @@
-import AboutStorySection from "@/components/AboutStorySection";// 1. Import the new FeatureSection component
+import AboutStorySection from "@/components/AboutStorySection";
 import FeatureSection from "@/components/FeatureSection";
 import { ClipboardList, HardHat, ShieldCheck, Wrench } from 'lucide-react';
 import HearoInterrior from "@/components/heroInterior";
 import StatsSection from "@/components/StatsSection";
 import TeamSection from "@/components/TeamSection";
-import TestimonialsSection from "@/components/TestimonialsSection";
-
+import dynamic from 'next/dynamic';
+const TestimonialsSection = dynamic(() => import('@/components/TestimonialsSection'), {
+    loading: () => <div className="text-center p-16">Chargement des témoignages...</div>,
+    ssr: false // Optionnel : si le carrousel ne doit pas du tout être pré-rendu sur le serveur.
+});
 
 
 export default function AboutPage() {

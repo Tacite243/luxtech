@@ -3,6 +3,17 @@ import HearoInterrior from '@/components/heroInterior';
 import ProjectDetailsContent from '@/components/ProjectDetailsContent';
 import { detailedProjectsData } from '@/lib/project-data';
 
+
+
+// --- Fonction pour la Génération Statique ---
+// Dit à Next.js quelles pages générer au build
+export async function generateStaticParams() {
+    return detailedProjectsData.map((project) => ({
+        id: project.id.toString(),
+    }));
+}
+
+
 // Fonction pour récupérer un projet par son ID
 function getProjectById(id: number) {
     return detailedProjectsData.find(project => project.id === id);

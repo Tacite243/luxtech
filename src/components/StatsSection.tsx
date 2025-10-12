@@ -1,5 +1,3 @@
-"use client";
-
 import { motion, Variants } from 'framer-motion';
 import { Smile, FolderKanban, Headset, Users } from 'lucide-react';
 import AnimatedCounter from './AnimatedCounter'; // Import our new counter

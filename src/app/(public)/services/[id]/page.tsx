@@ -3,6 +3,17 @@ import HearoInterrior from '@/components/heroInterior';
 import ServiceDetailsContent from '@/components/ServiceDetailsContent';
 import { detailedServicesData } from '@/lib/services-data';
 
+
+
+// --- Fonction pour la Génération Statique ---
+// Dit à Next.js quelles pages de service générer au build
+export async function generateStaticParams() {
+    return detailedServicesData.map((service) => ({
+        id: service.id.toString(),
+    }));
+}
+
+
 function getServiceById(id: number) {
     return detailedServicesData.find(service => service.id === id);
 }

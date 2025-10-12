@@ -1,8 +1,8 @@
-"use client";
-
 import { motion, Variants } from 'framer-motion';
 import { CheckCircle, PlayCircle } from 'lucide-react';
 import Image from 'next/image';
+
+
 
 // --- Variantes d'Animation ---
 const fadeInUp: Variants = {
