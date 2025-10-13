@@ -9,11 +9,11 @@ const usefulLinks = [
 ];
 
 const ourServices = [
-  { name: 'Construction Moderne', href: '/services' },
-  { name: 'Installations Électriques', href: '/services' },
-  { name: 'Design Intérieur', href: '/services' },
-  { name: 'Solutions Domotiques', href: '/services' },
-  { name: 'Dépannage & Maintenance', href: '/services' },
+  { name: 'Construction Moderne', href: '/services/1' },
+  { name: 'Installations Électriques', href: '/services/2' },
+  { name: 'Design Intérieur', href: '/services/3' },
+  { name: 'Solutions Domotiques', href: '/services/4' },
+  { name: 'Dépannage & Maintenance', href: '/services/6' },
 ];
 
 export default function Footer() {
@@ -69,7 +69,9 @@ export default function Footer() {
           <div>
             <h4 className="font-semibold mb-4 text-lg">Contactez-Nous</h4>
             <p>
-              Pour toute question ou demande de devis, n&apos;hésitez pas à nous contacter. Nous sommes là pour vous aider à réaliser vos projets.
+              Pour toute question ou demande de devis, n&apos;hésitez pas à nous 
+              <Link href="/contact" className="hover:text-[#FF0000] transition-colors"><strong> contacter</strong></Link>.
+              Nous sommes là pour vous aider à réaliser vos projets.
             </p>
           </div>
 
