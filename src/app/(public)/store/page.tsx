@@ -19,13 +19,15 @@ interface StorePageProps {
 const getEffectivePrice = (product: Product) => product.salePrice ?? product.price;
 
 export default function StorePage({ searchParams }: StorePageProps) {
-    // --- Logique de filtrage et de pagination (côté serveur) ---
+    const category = searchParams.category;
+    const sort = searchParams.sort;
+    const page = searchParams.page;
     let filteredProducts = [...productsData];
 
     // Filtrer par catégorie, on filtre uniquement si 
     // une catégorie est spécifiée ET qu'elle n'est pas "Tous"
-    if (searchParams.category && searchParams.category !== "Tous") {
-        filteredProducts = filteredProducts.filter(p => p.category === searchParams.category);
+    if (category && category !== "Tous") {
+        filteredProducts = filteredProducts.filter(p => p.category === category);
     }
 
     // Trier les produits

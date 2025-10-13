@@ -62,10 +62,10 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 <div className="mt-auto flex items-center justify-between">
                     <p className="text-xl font-extrabold text-[#111827]">
-                        {displayPrice?.toFixed(2)} €
+                        {displayPrice?.toFixed(2)} Fc
                         {originalPrice && (
                             <span className="text-sm text-gray-400 line-through ml-2">
-                                {originalPrice.toFixed(2)} €
+                                {originalPrice.toFixed(2)} Fc
                             </span>
                         )}
                     </p>
