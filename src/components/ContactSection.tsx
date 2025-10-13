@@ -22,12 +22,35 @@ interface ContactInfo {
     icon: ElementType;
     title: string;
     details: string[];
+    // Ajoutons des propriétés optionnelles pour les liens
+    linkType?: 'tel' | 'mailto' | 'map';
+    linkValue?: string;
 }
 
 const contactInfoItems: ContactInfo[] = [
-    { icon: MapPin, title: "Notre Adresse", details: ["149 Av Nzangi butondo, Q/Kyeshero", "Goma, RDC"] },
-    { icon: Mail, title: "Envoyez-nous un email", details: ["info@luxtechservices.com"] },
-    { icon: Phone, title: "Appelez-nous", details: ["+243 997 354 382"] },
+    {
+        icon: MapPin,
+        title: "Notre Adresse",
+        details: ["149 Av Nzangi butondo, Q/Kyeshero", "Goma, RDC"],
+        linkType: 'map',
+        // Lien direct vers Google Maps (URL encodée pour la recherche)
+        linkValue: 'https://www.google.com/maps/search/?api=1&query=149+Av+Nzangi+butondo,+Goma,+RDC'
+    },
+    {
+        icon: Mail,
+        title: "Envoyez-nous un email",
+        details: ["info@luxtechservices.com"],
+        linkType: 'mailto',
+        linkValue: 'info@luxtechservices.com'
+    },
+    {
+        icon: Phone,
+        title: "Appelez-nous",
+        details: ["+243 997 354 382"],
+        linkType: 'tel',
+        // Format international sans espaces ni caractères spéciaux pour `tel:`
+        linkValue: '+243997354382'
+    },
 ];
 
 const fadeInUp: Variants = {
@@ -80,17 +103,38 @@ export default function ContactForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     {contactInfoItems.map((item, index) => {
                         const Icon = item.icon;
+                        
+                        // Déterminer le préfixe du lien
+                        let hrefPrefix = '';
+                        if (item.linkType === 'tel') hrefPrefix = 'tel:';
+                        if (item.linkType === 'mailto') hrefPrefix = 'mailto:';
+
+                        const linkHref = item.linkValue ? `${hrefPrefix}${item.linkValue}` : '#';
+
                         return (
-                            <motion.div key={index} variants={fadeInUp} className="text-center p-8 bg-white rounded-xl shadow-lg border border-transparent hover:border-[#FBBF24] transition-colors duration-300">
-                                {/* MODIFIÉ : Remplacement de text-brand-gold par une valeur hexadécimale */}
+                            <motion.div key={index} variants={fadeInUp} className="text-center p-8 bg-white rounded-xl shadow-lg border border-transparent hover:border-[#FBBF24] transition-colors duration-300 flex flex-col">
                                 <Icon size={40} className="text-[#FBBF24] mx-auto mb-5" strokeWidth={1.5} />
-                                {/* MODIFIÉ : Remplacement de text-brand-dark */}
                                 <h3 className="text-xl font-bold text-[#111827] mb-2">{item.title}</h3>
-                                {item.details.map(detail => <p key={detail} className="text-gray-600">{detail}</p>)}
+                                <div className="mt-auto">
+                                    {/* On transforme les détails en liens */}
+                                    {item.details.map((detail, detailIndex) => (
+                                        <a 
+                                            key={detailIndex}
+                                            href={linkHref}
+                                            // Ouvre Google Maps dans un nouvel onglet
+                                            target={item.linkType === 'map' ? '_blank' : '_self'}
+                                            rel={item.linkType === 'map' ? 'noopener noreferrer' : ''}
+                                            className="block text-gray-600 hover:text-[#111827] transition-colors duration-200"
+                                        >
+                                            {detail}
+                                        </a>
+                                    ))}
+                                </div>
                             </motion.div>
                         );
                     })}
                 </div>
+
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     <motion.div variants={fadeInUp} className="h-[450px] lg:h-full w-full rounded-xl overflow-hidden shadow-2xl">
