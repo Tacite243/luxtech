@@ -3,7 +3,7 @@ import { Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 
 const usefulLinks = [
   { name: 'Accueil', href: '/' },
-  { name: 'À Propos', href: '/a-propos' },
+  { name: 'À Propos', href: '/about' },
   { name: 'Services', href: '/services' },
   { name: 'Projets', href: '/projets' },
 ];

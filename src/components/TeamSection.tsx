@@ -1,3 +1,5 @@
+"use client"
+
 import { motion, Variants } from 'framer-motion';
 import Image from 'next/image';
 import { Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';

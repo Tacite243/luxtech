@@ -1,4 +1,4 @@
-import { Variants } from 'framer-motion';
+// import { Variants } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -17,10 +17,10 @@ interface PageHeaderProps {
 //     visible: { opacity: 1, transition: { staggerChildren: 0.2, delayChildren: 0.1 } }
 // };
 
-const itemVariants: Variants = {
-    hidden: { opacity: 0, y: 20 },
-    visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
-};
+// const itemVariants: Variants = {
+//     hidden: { opacity: 0, y: 20 },
+//     visible: { opacity: 1, y: 0, transition: { duration: 0.5, ease: 'easeOut' } }
+// };
 
 export default function HearoInterrior({ title, breadcrumbs }: PageHeaderProps) {
     return (
