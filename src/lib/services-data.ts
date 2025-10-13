@@ -1,4 +1,3 @@
-
 // Define the type for a single service
 export type Service = {
     id: number;
@@ -70,16 +69,17 @@ export const detailedServicesData: Service[] = [
     },
     {
         id: 5,
-        iconName: "Key",
-        title: "Projets Clés en Main",
-        shortDescription: "Nous gérons tout, de l'étude à la livraison, pour un projet sans souci et une valeur ajoutée réelle.",
-        mainImage: '/img/projects/repairs-1.jpg',
-        longDescription: "<p>Optez pour la tranquillité d'esprit avec notre service de projets clés en main. Nous prenons en charge l'intégralité de votre projet, de la conception initiale à la coordination de tous les corps de métier, jusqu'à la livraison finale. Un seul interlocuteur pour un résultat garanti.</p>",
+        iconName: "ShoppingCart",
+        title: "Ventes des Matériaux et Matériels de Construction",
+        shortDescription: "Fourniture de matériaux et équipements de qualité pour tous vos projets de construction et de rénovation.",
+        mainImage: '/img/projects/materials-1.jpg',
+        longDescription: "<p>Nous proposons une large gamme de matériaux et matériels de construction sélectionnés pour leur qualité, leur durabilité et leur conformité aux normes en vigueur. Que vous soyez un particulier, un entrepreneur ou une entreprise, nous vous accompagnons dans le choix des produits adaptés à vos besoins et à votre budget.</p>",
         features: [
-            "Interlocuteur unique et dédié",
-            "Planification et coordination complètes",
-            "Gestion administrative et des permis",
-            "Garantie d'un résultat conforme à vos attentes"
+            "Matériaux de construction certifiés (ciment, briques, fers à béton, etc.)",
+            "Matériels professionnels (échafaudages, outils, équipements électriques)",
+            "Livraison rapide sur chantier ou en entrepôt",
+            "Conseils techniques pour le choix des produits",
+            "Partenariats avec des marques reconnues"
         ]
     },
     {

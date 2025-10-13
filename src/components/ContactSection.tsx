@@ -103,7 +103,7 @@ export default function ContactForm() {
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mb-16">
                     {contactInfoItems.map((item, index) => {
                         const Icon = item.icon;
-                        
+
                         // Déterminer le préfixe du lien
                         let hrefPrefix = '';
                         if (item.linkType === 'tel') hrefPrefix = 'tel:';
@@ -118,7 +118,7 @@ export default function ContactForm() {
                                 <div className="mt-auto">
                                     {/* On transforme les détails en liens */}
                                     {item.details.map((detail, detailIndex) => (
-                                        <a 
+                                        <a
                                             key={detailIndex}
                                             href={linkHref}
                                             // Ouvre Google Maps dans un nouvel onglet
@@ -134,7 +134,6 @@ export default function ContactForm() {
                         );
                     })}
                 </div>
-
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-start">
                     <motion.div variants={fadeInUp} className="h-[450px] lg:h-full w-full rounded-xl overflow-hidden shadow-2xl">

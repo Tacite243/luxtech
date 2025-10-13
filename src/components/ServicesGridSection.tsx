@@ -1,7 +1,7 @@
 "use client";
 
 import { motion, Variants } from 'framer-motion';
-import { HardHat, Zap, Paintbrush, BrainCircuit, Key, Wrench, ArrowRight } from 'lucide-react';
+import { HardHat, Zap, Paintbrush, BrainCircuit, Key, Wrench, ArrowRight, ShoppingCart } from 'lucide-react';
 import { detailedServicesData } from '@/lib/services-data';
 
 
@@ -12,6 +12,7 @@ const iconComponents = {
     Paintbrush,
     BrainCircuit,
     Key,
+    ShoppingCart,
     Wrench
 }
 
