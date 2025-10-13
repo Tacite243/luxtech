@@ -1,8 +1,34 @@
 @import "tailwindcss";
 
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Thème clair par défaut */
+  --background: #FFFFFF;
+  /* Fond blanc pur */
+  --foreground: #111827;
+  /* Texte principal (noir doux/anthracite) */
+  --muted-foreground: #6B7280;
+  /* Texte secondaire (gris) */
+  --card-background: #FFFFFF;
+  /* Fond des cartes */
+  --border-color: #E5E7EB;
+  /* Couleur des bordures subtiles */
+  --accent-color: #FBBF24;
+  /* Votre couleur "or" */
+}
+
+/* 
+   Le thème sombre est optionnel, mais c'est une bonne pratique de le garder.
+   Pour l'instant, on le laisse identique au thème clair pour ne pas créer de confusion.
+*/
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #FFFFFF;
+    --foreground: #111827;
+    --muted-foreground: #6B7280;
+    --card-background: #FFFFFF;
+    --border-color: #E5E7EB;
+    --accent-color: #FBBF24;
+  }
 }
 
 @theme inline {
@@ -12,15 +38,8 @@
   --font-mono: var(--font-geist-mono);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
-  }
-}
-
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  /* On utilise les polices de Next.js/font pour la performance, pas Arial */
 }
