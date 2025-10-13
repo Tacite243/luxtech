@@ -9,7 +9,7 @@ import { Twitter, Facebook, Instagram, Linkedin } from 'lucide-react';
 // --- Données de l'Équipe ---
 const teamData = [
     {
-        name: "Paulin AS NGOBOBO",
+        name: "Paulin NDUME AS",
         role: "Directeur Exécutif",
         imageUrl: "/img/team/paulin.jpg",
         bio: "Pilote la vision de l'entreprise avec une passion pour l'innovation et un engagement total envers la satisfaction client.",
@@ -157,13 +157,13 @@ export default function TeamSection() {
                                     />
                                 </div>
                                 {/* Overlay des réseaux sociaux */}
-                                <div className="absolute inset-0 bg-[#000000]/60 rounded-full flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
+                                {/* <div className="absolute inset-0 bg-[#000000]/60 rounded-full flex items-center justify-center gap-3 opacity-0 group-hover:opacity-100 transition-opacity duration-300">
                                     {member.socials.map(social => (
                                         <a key={social.name} href={social.href} className="text-[#FFFFFF] hover:text-[#FF0000] transition-colors">
                                             <social.icon size={20} />
                                         </a>
                                     ))}
-                                </div>
+                                </div> */}
                             </div>
 
                             <div className="member-info">

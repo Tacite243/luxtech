@@ -32,7 +32,7 @@ export default function Navbar() {
                 <Link
                   key={link.name}
                   href={link.href}
-                  className={`relative text-accent hover:text-accent-yellow transition-colors duration-300
+                  className={`relative text-accent hover:text-accent-yellow transition-colors duration-300 hover:text-[#FF0000] transition-colors
                     ${isActive ? 'text-accent-yellow' : ''}`}
                 >
                   {link.name}
