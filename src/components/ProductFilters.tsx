@@ -1,9 +1,10 @@
 "use client";
 
 import { useRouter, usePathname, useSearchParams } from 'next/navigation';
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { SlidersHorizontal, X } from 'lucide-react';
+import { ChevronDown, SlidersHorizontal, X } from 'lucide-react';
+
 
 
 
@@ -19,6 +20,8 @@ export default function ProductFilters() {
     const searchParams = useSearchParams();
     const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
     const activeCategory = searchParams.get('category') || "Tous";
+    const [isSortOpen, setIsSortOpen] = useState(false);
+    const sortRef = useRef<HTMLDivElement>(null);
 
     // --- Logique pour gérer les catégories ---
     const handleCategoryClick = (category: string) => {
@@ -46,6 +49,25 @@ export default function ProductFilters() {
         },
         [searchParams]
     );
+
+    // --- Logique pour gérer le tri (inchangée et correcte) ---
+    const handleSortChange = (value: string) => {
+        const params = new URLSearchParams(searchParams.toString());
+        params.set('sort', value);
+        params.set('page', '1');
+        router.push(pathname + '?' + params.toString());
+    };
+
+    // Hook pour gérer la fermeture au clic extérieur
+    useEffect(() => {
+        const handleClickOutside = (event: MouseEvent) => {
+            if (sortRef.current && !sortRef.current.contains(event.target as Node)) {
+                setIsSortOpen(false);
+            }
+        };
+        document.addEventListener("mousedown", handleClickOutside);
+        return () => document.removeEventListener("mousedown", handleClickOutside);
+    }, [sortRef]);
 
     // Un composant réutilisable pour le contenu des filtres (principe DRY)
     const FilterContent = () => (
@@ -91,6 +113,47 @@ export default function ProductFilters() {
             </div>
             <div>
                 <h3 className="text-xl font-bold text-[#111827] mb-4 border-b pb-2">Trier par</h3>
+                <div ref={sortRef} className="relative">
+                    {/* Le bouton qui affiche la sélection actuelle */}
+                    <button
+                        onClick={() => setIsSortOpen(!isSortOpen)}
+                        className="w-full flex items-center justify-between px-4 py-3 bg-white border border-gray-300 rounded-lg focus:ring-2 focus:ring-[#FBBF24] focus:border-[#FBBF24] transition"
+                    >
+                        <span className="text-gray-700">
+                            {sortOptions.find(opt => opt.value === searchParams.get('sort'))?.name || 'Pertinence'}
+                        </span>
+                        <motion.div
+                            animate={{ rotate: isSortOpen ? 180 : 0 }}
+                            transition={{ duration: 0.2 }}
+                        >
+                            <ChevronDown size={20} className="text-gray-500" />
+                        </motion.div>
+                    </button>
+
+                    {/* Le menu déroulant animé */}
+                    <AnimatePresence>
+                        {isSortOpen && (
+                            <motion.ul
+                                initial={{ opacity: 0, scale: 0.95, y: -10 }}
+                                animate={{ opacity: 1, scale: 1, y: 0 }}
+                                exit={{ opacity: 0, scale: 0.95, y: -10 }}
+                                transition={{ duration: 0.15, ease: 'easeOut' }}
+                                className="absolute top-full left-0 w-full mt-2 bg-white border border-gray-200 rounded-lg shadow-xl z-20 overflow-hidden"
+                            >
+                                {[{ name: 'Pertinence', value: '' }, ...sortOptions].map(option => (
+                                    <li key={option.value}>
+                                        <button
+                                            onClick={() => handleSortChange(option.value)}
+                                            className="w-full text-left px-4 py-3 hover:bg-[#FBBF24] hover:text-[#111827] transition-colors"
+                                        >
+                                            {option.name}
+                                        </button>
+                                    </li>
+                                ))}
+                            </motion.ul>
+                        )}
+                    </AnimatePresence>
+                </div>
             </div>
         </div>
     );
