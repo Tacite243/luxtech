@@ -36,6 +36,13 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []); // Le tableau vide signifie que cet effet ne s'exécute qu'une fois (au montage)
 
+  // Icône personnalisée pour le menu burger
+  const BurgerIcon = () => (
+    <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
+    </svg>
+  );
+
   return (
     // Les classes de l'en-tête changent dynamiquement
     <header
@@ -72,10 +79,30 @@ export default function Navbar() {
             })}
           </div>
 
-          <div className="md:hidden">
+          {/* <div className="md:hidden">
             <button onClick={() => setIsOpen(!isOpen)} className="text-white z-50 relative">
               {isOpen ? <X size={28} /> : <Menu size={28} />}
             </button>
+          </div> */}
+          <div className="md:hidden">
+            <motion.button
+              onClick={() => setIsOpen(!isOpen)}
+              className="text-white z-50 relative p-2 -mr-2" // Zone de clic plus grande
+              whileTap={{ scale: 0.9 }} // Effet de clic
+            >
+              <AnimatePresence initial={false} mode="wait">
+                <motion.div
+                  key={isOpen ? 'close' : 'open'}
+                  initial={{ rotate: -90, opacity: 0 }}
+                  animate={{ rotate: 0, opacity: 1 }}
+                  exit={{ rotate: 90, opacity: 0 }}
+                  transition={{ duration: 0.2 }}
+                >
+                  {/* On affiche l'icône X ou notre BurgerIcon personnalisé */}
+                  {isOpen ? <X size={28} /> : <BurgerIcon />}
+                </motion.div>
+              </AnimatePresence>
+            </motion.button>
           </div>
         </div>
       </nav>
