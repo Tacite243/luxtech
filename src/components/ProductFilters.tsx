@@ -39,16 +39,16 @@ export default function ProductFilters() {
     };
 
     // Fonction pour mettre à jour les paramètres de l'URL
-    const createQueryString = useCallback(
-        (name: string, value: string) => {
-            const params = new URLSearchParams(searchParams.toString());
-            params.set(name, value);
-            // Réinitialiser la page à 1 lors du changement de filtre
-            params.set('page', '1');
-            return params.toString();
-        },
-        [searchParams]
-    );
+    // const createQueryString = useCallback(
+    //     (name: string, value: string) => {
+    //         const params = new URLSearchParams(searchParams.toString());
+    //         params.set(name, value);
+    //         // Réinitialiser la page à 1 lors du changement de filtre
+    //         params.set('page', '1');
+    //         return params.toString();
+    //     },
+    //     [searchParams]
+    // );
 
     // --- Logique pour gérer le tri (inchangée et correcte) ---
     const handleSortChange = (value: string) => {

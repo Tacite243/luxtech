@@ -51,7 +51,7 @@ export default function StoreContent() {
                 ) : (
                     <div className="text-center py-20 bg-white rounded-lg border">
                         <h3 className="text-2xl font-bold text-[#111827]">Aucun produit trouvé</h3>
-                        <p className="text-gray-600 mt-2">Essayez d'ajuster vos filtres.</p>
+                        <p className="text-gray-600 mt-2">Essayez d&apos;ajuster vos filtres.</p>
                     </div>
                 )}
 
