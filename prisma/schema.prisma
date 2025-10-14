@@ -1,0 +1,124 @@
+
+
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// ==================================
+// AUTHENTIFICATION ET UTILISATEURS
+// ==================================
+
+model User {
+  id        String   @id @default(cuid())
+  name      String?
+  email     String   @unique
+  password  String
+  role      Role     @default(USER)
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relations
+  orders Order[] // Un utilisateur peut avoir plusieurs commandes
+}
+
+enum Role {
+  USER
+  ADMIN
+  SUPERADMIN
+}
+
+// ==================================
+// PRODUITS ET COMMANDES
+// ==================================
+
+model Product {
+  id          String   @id @default(cuid())
+  name        String
+  description String
+  price       Float
+  stock       Int      @default(0)
+  images      String[] // Liste d'URLs d'images
+  category    String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relations
+  orderItems OrderItem[] // Un produit peut être dans plusieurs lignes de commande
+}
+
+model Order {
+  id            String       @id @default(cuid())
+  total         Float
+  status        OrderStatus  @default(PENDING)
+  paymentMethod PaymentMethod
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+
+  // Relations
+  userId        String
+  user          User         @relation(fields: [userId], references: [id])
+  orderItems    OrderItem[]  // Une commande est composée de plusieurs produits
+  Payment       Payment?     // Une commande peut avoir un paiement associé
+}
+
+// Table de liaison pour la relation Many-to-Many entre Order et Product
+model OrderItem {
+  id        String @id @default(cuid())
+  quantity  Int
+  price     Float // Prix du produit au moment de la commande
+
+  // Relations
+  orderId   String
+  order     Order  @relation(fields: [orderId], references: [id])
+  productId String
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@unique([orderId, productId])
+}
+
+enum OrderStatus {
+  PENDING    // En attente de paiement
+  PAID       // Payée
+  SHIPPED    // Expédiée
+  DELIVERED  // Livrée
+  CANCELLED  // Annulée
+}
+
+enum PaymentMethod {
+  AIRTEL_MONEY
+  PHYSICAL
+  WHATSAPP
+}
+
+// ==================================
+// PAIEMENTS
+// ==================================
+
+model Payment {
+  id            String   @id @default(cuid())
+  amount        Float
+  status        String   // ex: "success", "failed", "pending"
+  method        String   // ex: "Airtel Money"
+  transactionId String?  @unique // ID de transaction de l'API externe
+  createdAt     DateTime @default(now())
+
+  // Relations
+  orderId String  @unique // Relation One-to-One avec Order
+  order   Order   @relation(fields: [orderId], references: [id])
+}
+
+// ==================================
+// CONTENU PUBLIC DU SITE
+// ==================================
+
+model PublicInfo {
+  id      String @id @default(cuid())
+  section String @unique // ex: "hero-title", "about-text"
+  content Json   // Utiliser JSON pour une flexibilité maximale (texte, images, etc.)
+}
