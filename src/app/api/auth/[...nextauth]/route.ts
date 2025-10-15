@@ -1,14 +1,32 @@
 import NextAuth, { NextAuthOptions } from 'next-auth';
 import CredentialsProvider from 'next-auth/providers/credentials';
+import GoogleProvider from 'next-auth/providers/google'; // 1. Importer Google Provider
+import AppleProvider from 'next-auth/providers/apple';   // 2. Importer Apple Provider
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
 import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
+import { prisma } from '@/lib/prisma';
 
-const prisma = new PrismaClient();
+
 
 export const authOptions: NextAuthOptions = {
+  // Le PrismaAdapter est la clé ! Il gérera automatiquement la création
+  // des utilisateurs qui se connectent via Google ou Apple.
   adapter: PrismaAdapter(prisma),
   providers: [
+    // --- FOURNISSEUR GOOGLE ---
+    GoogleProvider({
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
+
+    // --- FOURNISSEUR APPLE ---
+    AppleProvider({
+      clientId: process.env.APPLE_CLIENT_ID as string,
+      clientSecret: process.env.APPLE_CLIENT_SECRET as string,
+    }),
+
+    // --- VOTRE FOURNISSEUR CREDENTIALS EXISTANT ---
     CredentialsProvider({
       name: 'Credentials',
       credentials: {
@@ -24,8 +42,10 @@ export const authOptions: NextAuthOptions = {
           where: { email: credentials.email }
         });
 
-        if (!user) {
-          throw new Error('Aucun utilisateur trouvé avec cet email');
+        // IMPORTANT : Si un utilisateur s'est inscrit avec Google/Apple, il n'aura pas de mot de passe.
+        // Il ne doit pas pouvoir se connecter avec un mot de passe.
+        if (!user || !user.password) {
+          throw new Error("Cet utilisateur n'a pas de mot de passe.Essayez de vous connecter avec Google ou Apple.");
         }
 
         const isPasswordValid = await bcrypt.compare(credentials.password, user.password);
@@ -34,7 +54,6 @@ export const authOptions: NextAuthOptions = {
           throw new Error('Mot de passe incorrect');
         }
 
-        // Renvoyer l'utilisateur sans le mot de passe
         return {
           id: user.id,
           email: user.email,
@@ -48,15 +67,15 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    // Ce callback est appelé lorsque le JWT est créé
-    async jwt({ token, user }) {
+    async jwt({ token, user, account }) {
+      // Le `user` n'est disponible qu'à la première connexion.
+      // On persiste l'ID et le rôle dans le token.
       if (user) {
         token.id = user.id;
-        token.role = user.role;
+        token.role = user.role; // Le rôle sera 'USER' par défaut grâce au schéma Prisma
       }
       return token;
     },
-    // Ce callback est appelé lorsque la session est accédée
     async session({ session, token }) {
       if (session.user) {
         session.user.id = token.id as string;

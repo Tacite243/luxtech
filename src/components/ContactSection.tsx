@@ -7,7 +7,7 @@ import { toast } from 'react-hot-toast';
 import type { ElementType } from 'react';
 import { Send, User, Mail, MessageSquare, Loader2, MapPin, Phone } from 'lucide-react';
 import { AppDispatch, RootState } from '@/redux/store';
-import { sendContactMessage, resetContactState } from '@/redux/slices/contactSlice';
+import { sendContactMessage, resetContactState } from '@/redux/features/contactSlice';
 
 
 
