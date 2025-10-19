@@ -2,8 +2,8 @@
 
 import { useRef } from 'react';
 import { Provider } from 'react-redux';
-import { makeStore, AppStore } from './store';
-
+import { makeStore, AppStore } from '../redux/store';
+import { injectStore } from '@/lib/axiosInstance';
 
 
 
@@ -16,6 +16,7 @@ export default function StoreProvider({
 
     if (!storeRef.current) {
         storeRef.current = makeStore();
+        injectStore(storeRef.current)
     }
 
     return <Provider store={storeRef.current}>{children}</Provider>;

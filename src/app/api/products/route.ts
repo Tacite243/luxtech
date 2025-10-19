@@ -1,8 +1,7 @@
 import { NextResponse } from 'next/server';
 import { PrismaClient } from '@prisma/client';
 import { z } from 'zod';
-import { getServerSession } from 'next-auth';
-import { authOptions } from '../auth/[...nextauth]/route';
+// import { getServerSession } from 'next-auth';
 
 const prisma = new PrismaClient();
 
@@ -33,7 +32,7 @@ export async function POST(request: Request) {
     const validation = createProductSchema.safeParse(body);
 
     if (!validation.success) {
-      return NextResponse.json({ error: validation.error.errors }, { status: 400 });
+      return NextResponse.json({ error: validation.error }, { status: 400 });
     }
 
     const newProduct = await prisma.product.create({

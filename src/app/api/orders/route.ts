@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { PrismaClient } from '@prisma/client';
+// import { PrismaClient } from '@prisma/client';
 import { getServerSession } from 'next-auth';
 import { authOptions } from '../auth/[...nextauth]/route';
 import { z } from 'zod';
 
-const prisma = new PrismaClient();
+// const prisma = new PrismaClient();
 
 const createOrderSchema = z.object({
   paymentMethod: z.enum(['AIRTEL_MONEY', 'PHYSICAL', 'WHATSAPP']),
@@ -30,7 +30,7 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: validation.error.flatten().fieldErrors }, { status: 400 });
     }
 
-    const { paymentMethod, items } = validation.data;
+    // const { paymentMethod, items } = validation.data;
 
     // ... Logique complexe ici :
     // 1. Vérifier le stock des produits
