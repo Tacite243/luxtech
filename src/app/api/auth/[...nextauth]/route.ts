@@ -3,7 +3,6 @@ import CredentialsProvider from 'next-auth/providers/credentials';
 import GoogleProvider from 'next-auth/providers/google'; // 1. Importer Google Provider
 import AppleProvider from 'next-auth/providers/apple';   // 2. Importer Apple Provider
 import { PrismaAdapter } from '@next-auth/prisma-adapter';
-import { PrismaClient } from '@prisma/client';
 import bcrypt from 'bcrypt';
 import { prisma } from '@/lib/prisma';
 
@@ -67,7 +66,7 @@ export const authOptions: NextAuthOptions = {
     strategy: 'jwt',
   },
   callbacks: {
-    async jwt({ token, user, account }) {
+    async jwt({ token, user }) {
       // Le `user` n'est disponible qu'à la première connexion.
       // On persiste l'ID et le rôle dans le token.
       if (user) {

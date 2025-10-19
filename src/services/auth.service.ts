@@ -15,6 +15,10 @@ export const registerUser = async (input: Prisma.UserCreateInput): Promise<SafeU
         where: { email: input.email },
     });
 
+    if (!input.password) {
+        throw new Error("Le mot de passe est requis pour l'inscription.");
+    }
+
     if (existingUser) {
         throw new Error('Un utilisateur avec cet email existe déjà.');
     }
