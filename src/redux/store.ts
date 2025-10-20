@@ -3,13 +3,14 @@
 import { configureStore } from '@reduxjs/toolkit';
 import contactReducer from './features/contactSlice'
 import authReducer from './features/authSlice';
-
+import uiReducer from './features/uiSlice';
 
 export const makeStore = () => {
     return configureStore({
         reducer: {
             contact: contactReducer,
             auth: authReducer,
+            ui: uiReducer,
         },
         // Activer les Redux DevTools uniquement en développement
         devTools: process.env.NODE_ENV !== 'production',

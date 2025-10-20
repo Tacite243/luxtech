@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/lib/axiosInstance';
 import { z } from 'zod';
 import { registerSchema } from '@/lib/validators/auth.validator'; // Réutiliser le schéma d'inscription
+import axios from 'axios';
 
 // ==================================
 // TYPES
@@ -52,8 +53,11 @@ export const registerUser = createAsyncThunk(
     try {
       const response = await axiosInstance.post('/auth/register', data);
       return response.data; // Le backend renvoie l'utilisateur créé
-    } catch (error: any) {
-      return rejectWithValue(error.response?.data?.error || 'Une erreur est survenue lors de l\'inscription.');
+    } catch (error: unknown) {
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data.error || 'Erreur lors de l\'inscription.');
+      }
+      return rejectWithValue('Une erreur réseau est survenue.');
     }
   }
 );
@@ -69,8 +73,11 @@ export const fetchUser = createAsyncThunk(
     try {
       const response = await axiosInstance.get('/auth/me');
       return response.data as User;
-    } catch (error: any) {
-      return rejectWithValue('Impossible de récupérer les informations de l\'utilisateur.');
+    } catch (error: unknown) { // CORRECTION
+      if (axios.isAxiosError(error) && error.response) {
+        return rejectWithValue(error.response.data.error || 'Session invalide.');
+      }
+      return rejectWithValue('Une erreur réseau est survenue.');
     }
   }
 );

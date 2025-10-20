@@ -20,11 +20,13 @@ export async function POST(request: Request) {
         // Envoi de la réponse
         return NextResponse.json(newUser, { status: 201 });
 
-    } catch (error: any) {
+    } catch (error: unknown) {
         // Gérer les erreurs spécifiques du service (ex: email déjà utilisé)
-        if (error.message === 'Un utilisateur avec cet email existe déjà.') {
-            return NextResponse.json({ error: error.message }, { status: 409 }); // 409 Conflict
-        }
+        if (error instanceof Error) {
+            if (error.message === 'Un utilisateur avec cet email existe déjà.') {
+                return NextResponse.json({ error: error.message }, { status: 409 }); // 409 Conflict
+            }
+        };
 
         // Gérer les autres erreurs
         console.error('Erreur d\'inscription:', error);
