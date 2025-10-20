@@ -9,7 +9,7 @@ import { useEffect } from "react";
 
 // Ce composant n'affiche rien. Son seul rôle est de synchroniser les états.
 export default function AuthManager() {
-    const { data: session, status } = useSession();
+    const { status } = useSession();
     const dispatch = useAppDispatch();
     const reduxUser = useAppSelector(state => state.auth.user);
 

@@ -1,4 +1,12 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice, AnyAction } from '@reduxjs/toolkit';
+
+// Helper pour vérifier si une action est un thunk asynchrone
+const isPendingAction = (action: AnyAction) => {
+    return typeof action.type === 'string' && action.type.endsWith('/pending');
+}
+const isFulfilledOrRejectedAction = (action: AnyAction) => {
+    return typeof action.type === 'string' && (action.type.endsWith('/fulfilled') || action.type.endsWith('/rejected'));
+}
 
 type UIState = {
     isLoading: boolean;
@@ -12,22 +20,26 @@ const uiSlice = createSlice({
     name: 'ui',
     initialState,
     reducers: {},
-    // C'est ici que la magie opère !
-    // Nous allons écouter les actions "pending" et "fulfilled"/"rejected" des autres slices.
     extraReducers: (builder) => {
         builder
-            // Quand une action asynchrone commence (matcher pour tous les `pending`)
+            // Quand une action asynchrone commence...
             .addMatcher(
-                (action) => action.type.endsWith('/pending'),
-                (state) => {
-                    state.isLoading = true;
+                (action): action is AnyAction => isPendingAction(action),
+                (state, action) => {
+                    // ... on active le loader SAUF pour l'action `fetchUser`
+                    if (action.type !== 'auth/fetchUser/pending') {
+                        state.isLoading = true;
+                    }
                 }
             )
-            // Quand une action asynchrone se termine (matcher pour tous les `fulfilled` et `rejected`)
+            // Quand une action asynchrone se termine...
             .addMatcher(
-                (action) => action.type.endsWith('/fulfilled') || action.type.endsWith('/rejected'),
-                (state) => {
-                    state.isLoading = false;
+                (action): action is AnyAction => isFulfilledOrRejectedAction(action),
+                (state, action) => {
+                    // ... on désactive le loader SAUF pour l'action `fetchUser`
+                    if (action.type !== 'auth/fetchUser/fulfilled' && action.type !== 'auth/fetchUser/rejected') {
+                        state.isLoading = false;
+                    }
                 }
             );
     },

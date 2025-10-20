@@ -23,7 +23,7 @@ export default function LoginPage() {
             Lux<span className="text-[#FBBF24]">Tech</span>
           </Link>
           <p className="mt-2 text-lg max-w-md text-gray-200">
-            Construire l'avenir, avec précision et excellence.
+            Construire l&apos;avenir, avec précision et excellence.
           </p>
         </div>
       </div>

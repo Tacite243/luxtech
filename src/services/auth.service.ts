@@ -36,7 +36,7 @@ export const registerUser = async (input: Prisma.UserCreateInput): Promise<SafeU
     });
 
     // Renvoyer l'utilisateur sans le mot de passe
-    const { password, ...safeUser } = user;
+    const { password: _password, ...safeUser } = user;
     return safeUser;
 };
 
@@ -50,7 +50,7 @@ export const getUserById = async (userId: string): Promise<SafeUser | null> => {
         return null;
     }
 
-    const { password, ...safeUser } = user;
+    const { password: _password, ...safeUser } = user;
     return safeUser;
 };
 
@@ -61,7 +61,7 @@ export const updateUser = async (userId: string, data: Prisma.UserUpdateInput): 
         data,
     });
 
-    const { password, ...safeUser } = user;
+    const { password: _password, ...safeUser } = user;
     return safeUser;
 };
 

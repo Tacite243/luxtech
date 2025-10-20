@@ -61,8 +61,9 @@ export default function AuthForm() {
                 setIsLogin(true);
                 resetRegisterForm(); // Vider les champs du formulaire d'inscription
             })
-            .catch((err: any) => {
-                toast.error(err || 'Une erreur est survenue.');
+            .catch((err: unknown) => {
+                const errorMessage = typeof err === 'string' ? err : "Une erreur est survenue."
+                toast.error(errorMessage);
             });
     };
 
@@ -144,7 +145,7 @@ export default function AuthForm() {
                                 {registerErrors.password && <p className="mt-1 text-xs text-red-600">{registerErrors.password.message}</p>}
                             </div>
                             <motion.button type="submit" disabled={isLoading} /* ... */ >
-                                {isLoading ? <Loader2 className="animate-spin" /> : <><UserPlus className="mr-2" size={18} /> S'inscrire</>}
+                                {isLoading ? <Loader2 className="animate-spin" /> : <><UserPlus className="mr-2" size={18} /> S&apos;inscrire</>}
                             </motion.button>
                         </form>
                     )}

@@ -1,5 +1,5 @@
 import GlobalLoader from "@/components/GlobalLoader";
-import { Loader2 } from "lucide-react";
+// import { Loader2 } from "lucide-react";
 
 // Ce composant est un Server Component !
 export default function Loading() {

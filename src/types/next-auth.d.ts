@@ -1,5 +1,6 @@
 import { DefaultSession, DefaultUser } from "next-auth";
-import { JWT, DefaultJWT } from "next-auth/jwt";
+import { JWT } from "next-auth/jwt";
+import type { DefaultJWT } from "next-auth/jwt"
 
 
 // Étendre le type User de base
