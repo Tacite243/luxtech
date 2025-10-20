@@ -26,6 +26,14 @@ export default withAuth(
                 return new NextResponse('Accès non autorisé', { status: 403 });
             }
         }
+    // Si l'utilisateur essaie d'accéder à /dashboard/*
+    if (pathname.startsWith('/dashboard')) {
+      // Et qu'il n'est ni ADMIN ni SUPERADMIN
+      if (token?.role !== 'ADMIN' && token?.role !== 'SUPERADMIN') {
+        // On le redirige vers la page d'accueil (ou une page "accès refusé")
+        return NextResponse.redirect(new URL('/', req.url));
+      }
+    }
     },
     {
         callbacks: {
@@ -41,7 +49,7 @@ export const config = {
         '/api/users/:path*',
         '/api/orders/:path*',
         '/api/public/:path*',
-        '/admin/:path*', // Dashboard admin
+        '/dashboard/:path*', // Dashboard admin
         '/me', // Espace membre
     ],
 };
