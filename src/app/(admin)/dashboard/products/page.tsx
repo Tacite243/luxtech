@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react';
 import { Product } from '@prisma/client';
 import toast from 'react-hot-toast';
-import { Plus, Edit, Trash2, X } from 'lucide-react';
+import { Plus, Edit, Trash2 } from 'lucide-react';
 import ProductForm, { ProductOutputValues } from '@/components/ProductForm';
 import { motion, AnimatePresence } from 'framer-motion';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
@@ -23,7 +23,7 @@ export default function ProductsPage() {
 
     const dispatch = useAppDispatch();
     // L'erreur ici est résolue en corrigeant store.ts
-    const { products, status: listStatus } = useAppSelector((state) => state.products);
+    const { products, status: listStatus, error: listError } = useAppSelector((state) => state.products);
     const { isLoading: isActionLoading } = useAppSelector((state) => state.ui);
 
     useEffect(() => {
@@ -38,7 +38,6 @@ export default function ProductsPage() {
     const handleCloseModal = () => setIsModalOpen(false);
 
     const handleSubmit = async (data: ProductOutputValues) => {
-        // --- CORRECTION : Ne pas utiliser de variable intermédiaire pour l'action ---
         if (selectedProduct) {
             // Cas de la mise à jour
             await toast.promise(
@@ -46,7 +45,6 @@ export default function ProductsPage() {
                 {
                     loading: 'Mise à jour...',
                     success: () => {
-                        dispatch(fetchProducts());
                         handleCloseModal();
                         return 'Produit mis à jour !';
                     },
@@ -60,7 +58,6 @@ export default function ProductsPage() {
                 {
                     loading: 'Création...',
                     success: () => {
-                        dispatch(fetchProducts());
                         handleCloseModal();
                         return 'Produit créé !';
                     },

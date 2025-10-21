@@ -38,7 +38,7 @@ export default async function DashboardPage() {
         Bonjour, {session?.user?.name || 'Admin'} !
       </h1>
       <p className="mt-1 text-gray-600">
-        Voici un aperçu de l'activité de votre boutique.
+        Voici un aperçu de l&apos;activité de votre boutique.
       </p>
 
       {/* Grille de statistiques */}

@@ -83,6 +83,7 @@ model Product {
   stock       Int      @default(0)
   images      String[] // Liste d'URLs d'images
   category    String
+  rating      Int      @default(0) // Note moyenne, de 0 à 5
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
 
