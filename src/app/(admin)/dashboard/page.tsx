@@ -23,7 +23,7 @@ const StatCard = ({ title, value, icon: Icon, change }: any) => (
 
 // Données de démonstration (à remplacer par des appels à la BDD)
 const stats = [
-    { title: "Revenu Total", value: "12,450 €", icon: DollarSign, change: "+12.5%" },
+    { title: "Revenu Total", value: "12,450 $", icon: DollarSign, change: "+12.5%" },
     { title: "Nouvelles Commandes", value: "89", icon: ShoppingCart, change: "+5.2%" },
     { title: "Nouveaux Utilisateurs", value: "32", icon: Users, change: "+2.1%" },
 ];

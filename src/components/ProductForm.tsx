@@ -90,7 +90,7 @@ export default function ProductForm({ product, onSubmit, onClose, isLoading }: P
                     {errors.description && <p className="mt-1 text-sm text-red-600">{errors.description.message}</p>}
                 </div>
                 <div className="grid grid-cols-2 gap-6">
-                    <FormField id="price" label="Prix (€)" type="text" inputMode="decimal" register={register} error={errors.price} />
+                    <FormField id="price" label="Prix ($)" type="text" inputMode="decimal" register={register} error={errors.price} />
                     <FormField id="stock" label="Stock" type="text" inputMode="numeric" register={register} error={errors.stock} />
                 </div>
                 <FormField id="category" label="Catégorie" register={register} error={errors.category} />

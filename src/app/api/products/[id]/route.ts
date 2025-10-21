@@ -18,10 +18,16 @@ interface Params {
     params: { id: string };
 }
 
+// L'interface Params reste utile pour typer l'argument de la fonction
+interface RouteContext {
+    params: { id: string };
+}
+
 // GET: Récupérer un produit spécifique
 export async function GET(request: Request, { params }: Params) {
     try {
-        const product = await prisma.product.findUnique({ where: { id: params.id } });
+        const {id} = params;
+        const product = await prisma.product.findUnique({ where: { id } });
         if (!product) {
             return NextResponse.json({ error: 'Produit non trouvé' }, { status: 404 });
         }
@@ -34,6 +40,8 @@ export async function GET(request: Request, { params }: Params) {
 // PUT: Mettre à jour un produit
 export async function PUT(request: Request, { params }: Params) {
     try {
+        const {id} = params;
+    
         const body = await request.json();
         const validation = updateProductSchema.safeParse(body);
 
@@ -42,7 +50,7 @@ export async function PUT(request: Request, { params }: Params) {
         }
 
         const updatedProduct = await prisma.product.update({
-            where: { id: params.id },
+            where: { id },
             data: validation.data,
         });
 
@@ -55,7 +63,8 @@ export async function PUT(request: Request, { params }: Params) {
 // DELETE: Supprimer un produit
 export async function DELETE(request: Request, { params }: Params) {
     try {
-        await prisma.product.delete({ where: { id: params.id } });
+        const {id} = params;
+        await prisma.product.delete({ where: { id } });
         return new NextResponse(null, { status: 204 }); // 204 No Content
     } catch (error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });

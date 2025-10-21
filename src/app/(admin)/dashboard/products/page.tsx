@@ -114,7 +114,7 @@ export default function ProductsPage() {
                                 <tr key={product.id} className="bg-white border-b hover:bg-gray-50">
                                     <th scope="row" className="px-6 py-4 font-medium text-gray-900 whitespace-nowrap">{product.name}</th>
                                     <td className="px-6 py-4">{product.category}</td>
-                                    <td className="px-6 py-4">{product.price} €</td>
+                                    <td className="px-6 py-4">{product.price} $</td>
                                     <td className="px-6 py-4">{product.stock}</td>
                                     <td className="px-6 py-4 text-right flex gap-4 justify-end">
                                         <button onClick={() => handleOpenModal(product)} className="font-medium text-blue-600 hover:underline"><Edit size={18} /></button>
