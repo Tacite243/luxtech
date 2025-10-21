@@ -37,7 +37,7 @@ const uiSlice = createSlice({
                 (action): action is AnyAction => isFulfilledOrRejectedAction(action),
                 (state, action) => {
                     // ... on désactive le loader SAUF pour l'action `fetchUser`
-                    if (action.type !== 'auth/fetchUser/fulfilled' && action.type !== 'auth/fetchUser/rejected') {
+                    if (action.type !== 'auth/fetchUser/pending' && action.type !== 'products/fetchProducts/pending') {
                         state.isLoading = false;
                     }
                 }
