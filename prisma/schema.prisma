@@ -161,3 +161,15 @@ model PublicInfo {
   section String @unique // ex: "hero-title", "about-text"
   content Json // Utiliser JSON pour une flexibilité maximale (texte, images, etc.)
 }
+
+// ==================================
+// STATISTIQUES DU SITE
+// ==================================
+
+model Stat {
+  id     String @id @default(cuid())
+  icon   String // Nom de l'icône Lucide (ex: "Smile", "FolderKanban")
+  label  String // ex: "Clients Satisfaits"
+  target Int // Le chiffre à afficher
+  order  Int    @default(0) // Pour contrôler l'ordre d'affichage
+}
