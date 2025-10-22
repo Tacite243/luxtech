@@ -3,7 +3,8 @@ import contactReducer from './features/contactSlice'
 import authReducer from './features/authSlice';
 import uiReducer from './features/uiSlice';
 import productsReducer from './features/productsSlice';
-import statsReducer from './features/statsSlice'
+import statsReducer from './features/statsSlice';
+import projectsReducer from './features/projectsSlices';
 
 
 export const makeStore = () => {
@@ -14,6 +15,7 @@ export const makeStore = () => {
             ui: uiReducer,
             products: productsReducer,
             stats: statsReducer,
+            projects: projectsReducer,
         },
         // Activer les Redux DevTools uniquement en développement
         devTools: process.env.NODE_ENV !== 'production',

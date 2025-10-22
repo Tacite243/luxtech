@@ -173,3 +173,27 @@ model Stat {
   target Int // Le chiffre à afficher
   order  Int    @default(0) // Pour contrôler l'ordre d'affichage
 }
+
+// ==================================
+// PROJETS DE L'ENTREPRISE
+// ==================================
+
+model Project {
+  id            String   @id @default(cuid())
+  title         String
+  category      String
+  mainImage     String // URL de l'image principale
+  galleryImages String[] // Liste d'URLs pour la galerie
+  client        String
+  projectDate   DateTime // Utiliser DateTime pour un tri et un filtrage plus faciles
+  projectUrl    String? // Optionnel
+  description   String   @db.Text // Pour les descriptions longues
+
+  // Champs pour le témoignage (tous optionnels)
+  testimonialQuote  String?
+  testimonialAuthor String?
+  testimonialRole   String?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}

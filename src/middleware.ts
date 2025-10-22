@@ -51,6 +51,7 @@ export const config = {
         '/api/public/:path*',
         '/dashboard/:path*', // Dashboard admin
         '/me', // Espace membre
-        '/api/stats/:path*'
+        '/api/stats/:path*',
+        '/api/projects/:path*',
     ],
 };
