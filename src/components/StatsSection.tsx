@@ -1,8 +1,8 @@
-
 import { prisma } from '@/lib/prisma';
-import { Smile, FolderKanban, Headset, Users } from 'lucide-react';
 import AnimatedCounter from './AnimatedCounter';
 import * as LucideIcons from 'lucide-react';
+
+
 
 // Mapper les noms de chaînes de caractères aux composants d'icônes
 const iconMap = {
@@ -44,32 +44,3 @@ export default async function StatsSection() {
         </section>
     );
 }
-
-
-
-
-
-
-
-// const statsData = [
-//     {
-//         icon: Smile,
-//         target: 127,
-//         label: "Clients Satisfaits"
-//     },
-//     {
-//         icon: FolderKanban,
-//         target: 84,
-//         label: "Projets Réalisés"
-//     },
-//     {
-//         icon: Headset,
-//         target: 2400,
-//         label: "Heures d'Assistance"
-//     },
-//     {
-//         icon: Users,
-//         target: 12,
-//         label: "Collaborateurs Experts"
-//     }
-// ];

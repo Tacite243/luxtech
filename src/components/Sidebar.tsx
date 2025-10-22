@@ -9,6 +9,7 @@ import { signOut } from 'next-auth/react';
 const adminNavLinks = [
   { name: 'Vue d\'ensemble', href: '/dashboard', icon: Home },
   { name: 'Produits', href: '/dashboard/products', icon: Package },
+  { name: "Stats", href: '/dashboard/stats', icon: Home },
   { name: 'Commandes', href: '/dashboard/orders', icon: ShoppingCart },
   { name: 'Utilisateurs', href: '/dashboard/users', icon: Users, role: 'SUPERADMIN' }, // Uniquement pour le SUPERADMIN
   { name: 'Paramètres', href: '/dashboard/settings', icon: Settings },
@@ -35,11 +36,10 @@ export default function Sidebar() {
             <Link
               key={link.name}
               href={link.href}
-              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${
-                isActive
+              className={`flex items-center gap-3 px-4 py-3 rounded-lg transition-colors ${isActive
                   ? 'bg-[#FBBF24] text-[#111827] font-semibold'
                   : 'hover:bg-gray-700'
-              }`}
+                }`}
             >
               <link.icon size={20} />
               <span>{link.name}</span>
