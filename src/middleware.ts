@@ -16,7 +16,7 @@ export default withAuth(
         // Protéger les routes API de super-administration
         if (pathname.startsWith('/api/users')) {
             if (token?.role !== 'SUPERADMIN') {
-                return new NextResponse('Accès non autorisé', { status: 403 });
+                return new NextResponse('Accès refusé. Seul un Super Administrateur peut gérer les utilisateurs.', { status: 403 });
             }
         }
 

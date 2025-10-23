@@ -120,7 +120,7 @@ export default function StatForm({ stat, onSubmit, onClose, isLoading }: StatFor
                         {errors.target && <p className="mt-1 text-sm text-red-600">{errors.target.message}</p>}
                     </div>
                     <div>
-                        <label htmlFor="order" className="block text-sm font-medium text-gray-700">Ordre d'affichage</label>
+                        <label htmlFor="order" className="block text-sm font-medium text-gray-700">Ordre d&apos;affichage</label>
                         <input id="order" {...register('order')} type="text" inputMode="numeric" placeholder="0" className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FBBF24] focus:ring-1 focus:ring-[#FBBF24] transition" />
                         {errors.order && <p className="mt-1 text-sm text-red-600">{errors.order.message}</p>}
                     </div>
