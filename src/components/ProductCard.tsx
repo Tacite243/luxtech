@@ -67,7 +67,7 @@ export default function ProductCard({ product }: { product: Product }) {
 
                 <div className="mt-auto flex items-center justify-between pt-4">
                     <p className="text-xl font-extrabold text-[#111827]">
-                        {displayPrice.toFixed(2)} €
+                        {displayPrice.toFixed(2)} $
                     </p>
 
                     <button
