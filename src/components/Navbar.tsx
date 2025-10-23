@@ -5,7 +5,8 @@ import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { X } from 'lucide-react';
-
+import { ShoppingCart } from 'lucide-react';
+import { useAppSelector } from '@/redux/hooks';
 
 
 const navLinks = [
@@ -21,6 +22,9 @@ export default function Navbar() {
   const pathname = usePathname();
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
+  const cartItems = useAppSelector((state) => state.cart.items);
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
+
 
   // Hook pour détecter le défilement
   useEffect(() => {
@@ -137,6 +141,16 @@ export default function Navbar() {
                     </li>
                   );
                 })}
+                <li>
+                  <Link href="/cart" className="relative text-gray-200 hover:text-white">
+                    <ShoppingCart size={24} />
+                    {totalItems > 0 && (
+                      <span className="absolute -top-2 -right-3 flex items-center justify-center w-5 h-5 bg-[#FBBF24] text-[#111827] text-xs font-bold rounded-full">
+                        {totalItems}
+                      </span>
+                    )}
+                  </Link>
+                </li>
               </ul>
             </div>
           </motion.div>

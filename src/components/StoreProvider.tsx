@@ -16,7 +16,16 @@ export default function StoreProvider({
 
     if (!storeRef.current) {
         storeRef.current = makeStore();
-        injectStore(storeRef.current)
+        injectStore(storeRef.current);
+        storeRef.current.subscribe(() => {
+            try {
+                const state = storeRef.current!.getState();
+                const serializedState = JSON.stringify(state.cart.items);
+                localStorage.setItem('cart', serializedState);
+            } catch (err) {
+                // Ignorer les erreurs d'écriture
+            }
+        })
     }
 
     return <Provider store={storeRef.current}>{children}</Provider>;
