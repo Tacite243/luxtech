@@ -59,8 +59,11 @@ export const createUser = createAsyncThunk('users/createUser', async (userData: 
     try {
         const response = await axiosInstance.post<SafeUser>('/users', userData);
         return response.data;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la création.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response?.data?.error || 'Erreur lors de la création.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 
@@ -68,8 +71,11 @@ export const updateUser = createAsyncThunk('users/updateUser', async ({ id, data
     try {
         const response = await axiosInstance.put<SafeUser>(`/users/${id}`, data);
         return response.data;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la mise à jour.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response?.data?.error || 'Erreur lors de la mise à jour.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 
@@ -77,8 +83,11 @@ export const deleteUser = createAsyncThunk('users/deleteUser', async (userId: st
     try {
         await axiosInstance.delete(`/users/${userId}`);
         return userId;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la suppression.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response?.data?.error || 'Erreur lors de la suppression.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 

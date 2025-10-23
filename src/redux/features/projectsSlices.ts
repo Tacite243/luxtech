@@ -2,6 +2,7 @@ import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axiosInstance from '@/lib/axiosInstance';
 import { Project } from '@prisma/client';
 import { ProjectOutputValues } from '@/components/ProjectForm';
+import axios from 'axios';
 
 
 
@@ -38,7 +39,7 @@ export const fetchProjects = createAsyncThunk('projects/fetchProjects', async (_
     try {
         const response = await axiosInstance.get<Project[]>('/projects');
         return response.data;
-    } catch (error) {
+    } catch (_error) {
         return rejectWithValue('Erreur lors du chargement des projets.');
     }
 });
@@ -47,8 +48,11 @@ export const createProject = createAsyncThunk('projects/createProject', async (p
     try {
         const response = await axiosInstance.post<Project>('/projects', projectData);
         return response.data;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la création.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response.data.error || 'Erreur lors de la création.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 
@@ -56,8 +60,11 @@ export const updateProject = createAsyncThunk('projects/updateProject', async ({
     try {
         const response = await axiosInstance.put<Project>(`/projects/${id}`, data);
         return response.data;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la mise à jour.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response?.data?.error || 'Erreur lors de la mise à jour.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 
@@ -65,8 +72,11 @@ export const deleteProject = createAsyncThunk('projects/deleteProject', async (p
     try {
         await axiosInstance.delete(`/projects/${projectId}`);
         return projectId;
-    } catch (error: any) {
-        return rejectWithValue(error.response?.data?.error || 'Erreur lors de la suppression.');
+    } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+            return rejectWithValue(error.response?.data?.error || 'Erreur lors de la suppression.');
+        }
+        return rejectWithValue('Une erreur réseau est survenue.');
     }
 });
 

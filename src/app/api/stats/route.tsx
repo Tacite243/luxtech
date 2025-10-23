@@ -19,7 +19,7 @@ export async function GET() {
             orderBy: { order: 'asc' }, // Ordonner par le champ 'order'
         });
         return NextResponse.json(stats);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -36,7 +36,7 @@ export async function POST(request: Request) {
 
         const newStat = await prisma.stat.create({ data: validation.data });
         return NextResponse.json(newStat, { status: 201 });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }

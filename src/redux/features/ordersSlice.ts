@@ -19,7 +19,7 @@ export type CreateOrderPayload = {
 // Type pour la réponse réussie de l'API
 type CreateOrderSuccessResponse = {
     order: Order;
-    paymentInfo?: any; // Informations de paiement d'Airtel
+    paymentInfo?: unknown; // Informations de paiement d'Airtel
     paymentError?: string;
 };
 

@@ -47,7 +47,7 @@ export async function PUT(request: Request) {
 
         return NextResponse.json(updatedUser);
 
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -64,7 +64,7 @@ export async function DELETE() {
 
         return NextResponse.json({ message: 'Compte supprimé avec succès' }, { status: 200 });
 
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }

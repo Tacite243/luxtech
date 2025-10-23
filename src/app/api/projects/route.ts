@@ -9,7 +9,7 @@ export async function GET() {
             orderBy: { projectDate: 'desc' }, // Trier par date, du plus récent au plus ancien
         });
         return NextResponse.json(projects);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -26,7 +26,7 @@ export async function POST(request: Request) {
 
         const newProject = await prisma.project.create({ data: validation.data });
         return NextResponse.json(newProject, { status: 201 });
-    } catch (error) {
+    } catch (_error) {
         console.error("Erreur lors de la création du projet:", error);
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }

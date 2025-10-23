@@ -30,7 +30,7 @@ export async function POST(req: NextRequest) {
         }
 
         return NextResponse.json({ message: "Webhook traité avec succès" });
-    } catch (error) {
+    } catch (_error) {
         console.error("Erreur Webhook Airtel:", error);
         return NextResponse.json({ error: "Erreur interne du serveur" }, { status: 500 });
     }

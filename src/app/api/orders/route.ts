@@ -4,6 +4,7 @@ import { authOptions } from '../auth/[...nextauth]/route';
 import { z } from 'zod';
 import { prisma } from '@/lib/prisma';
 import { initiateAirtelPayment } from '@/services/airtel.service';
+import axios from 'axios';
 
 
 
@@ -98,8 +99,10 @@ export async function POST(request: Request) {
         // On renvoie la commande et les infos de paiement au frontend
         return NextResponse.json({ order: newOrder, paymentInfo: paymentResponse }, { status: 201 });
 
-      } catch (error: any) {
-        console.error("Erreur API Airtel:", error.response?.data || error.message);
+      } catch (error: unknown) {
+        if (axios.isAxiosError(error) && error.response) {
+          console.error("Erreur API Airtel:", error.response?.data || error.message);
+        }
         // Même si le paiement échoue, la commande a été créée. L'utilisateur pourra réessayer.
         return NextResponse.json({
           order: newOrder,
@@ -111,8 +114,8 @@ export async function POST(request: Request) {
     // Si le paiement est physique ou via WhatsApp, on retourne juste la commande.
     return NextResponse.json({ order: newOrder }, { status: 201 });
 
-  } catch (error) {
-    console.error("Erreur création commande:", error);
+  } catch (_error) {
+    // console.error("Erreur création commande:", error);
     return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }

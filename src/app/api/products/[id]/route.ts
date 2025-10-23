@@ -32,7 +32,7 @@ export async function GET(request: Request, { params }: Params) {
             return NextResponse.json({ error: 'Produit non trouvé' }, { status: 404 });
         }
         return NextResponse.json(product);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -55,7 +55,7 @@ export async function PUT(request: Request, { params }: Params) {
         });
 
         return NextResponse.json(updatedProduct);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -66,7 +66,7 @@ export async function DELETE(request: Request, { params }: Params) {
         const {id} = params;
         await prisma.product.delete({ where: { id } });
         return new NextResponse(null, { status: 204 }); // 204 No Content
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }

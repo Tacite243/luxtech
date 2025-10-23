@@ -1,13 +1,21 @@
 "use client";
 
-import { useForm, SubmitHandler } from 'react-hook-form';
+import { useForm, SubmitHandler, UseFormRegister, FieldError, FieldValues, Path } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { Product } from '@prisma/client';
 import { Loader2 } from 'lucide-react';
-import { useEffect } from 'react';
+import { InputHTMLAttributes, useEffect } from 'react';
 
 
+
+// interface pour les props de FormField
+interface FormFieldProps<T extends FieldValues> extends InputHTMLAttributes<HTMLInputElement> {
+    id: Path<T>;
+    label: string;
+    register: UseFormRegister<T>;
+    error?: FieldError;
+}
 
 const productSchema = z.object({
     name: z.string().min(3, "Le nom est requis."),
@@ -38,13 +46,15 @@ interface ProductFormProps {
     isLoading: boolean;
 }
 
-const FormField = ({ id, label, register, error, ...props }: any) => (
-    <div>
-        <label htmlFor={id} className="block text-sm font-medium text-gray-700">{label}</label>
-        <input id={id} {...register(id)} {...props} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FBBF24] focus:ring-[#FBBF24] transition" />
-        {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
-    </div>
-);
+function FormField<T extends FieldValues>({ id, label, register, error, ...props }: FormFieldProps<T>) {
+    return (
+        <div>
+            <label htmlFor={id as string} className="block text-sm font-medium text-gray-700">{label}</label>
+            <input id={id as string} {...register(id)} {...props} className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-[#FBBF24] focus:ring-[#FBBF24] transition" />
+            {error && <p className="mt-1 text-sm text-red-600">{error.message}</p>}
+        </div>
+    );
+};
 
 export default function ProductForm({ product, onSubmit, onClose, isLoading }: ProductFormProps) {
     const { register, handleSubmit, reset, formState: { errors } } = useForm<ProductFormValues>({

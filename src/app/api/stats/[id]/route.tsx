@@ -30,7 +30,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
             data: validation.data,
         });
         return NextResponse.json(updatedStat);
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
@@ -41,7 +41,7 @@ export async function DELETE(request: Request, { params }: RouteContext) {
         const { id } = params;
         await prisma.stat.delete({ where: { id } });
         return new NextResponse(null, { status: 204 });
-    } catch (error) {
+    } catch (_error) {
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }

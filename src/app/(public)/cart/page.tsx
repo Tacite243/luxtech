@@ -4,7 +4,7 @@ import { useAppSelector, useAppDispatch } from "@/redux/hooks";
 import { updateQuantity, removeFromCart, CartItem } from "@/redux/features/cartSlice";
 import Image from "next/image";
 import Link from "next/link";
-import { ImageIcon, Trash2, Minus, Plus, ShoppingCart } from "lucide-react";
+import { ImageIcon, Minus, Plus, ShoppingCart } from "lucide-react";
 import CheckoutForm from "@/components/CheckoutForm";
 import HearoInterrior from "@/components/heroInterior";
 import { useState, useEffect } from "react";
@@ -104,7 +104,7 @@ export default function CartPage() {
                                         <h2 className="text-xl font-semibold mb-4">Résumé</h2>
                                         <div className="space-y-3 text-gray-600">
                                             <div className="flex justify-between"><span>Sous-total</span><span>{subtotal.toFixed(2)} $</span></div>
-                                            <div className="flex justify-between"><span>Livraison</span><span>Calculée à l'étape suivante</span></div>
+                                            <div className="flex justify-between"><span>Livraison</span><span>Calculée à l&apos;étape suivante</span></div>
                                         </div>
                                         <div className="flex justify-between mt-4 border-t pt-4">
                                             <span className="text-lg font-bold text-[#111827]">Total</span>

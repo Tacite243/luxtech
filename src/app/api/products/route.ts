@@ -20,7 +20,7 @@ export async function GET() {
   try {
     const products = await prisma.product.findMany();
     return NextResponse.json(products);
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
@@ -40,7 +40,7 @@ export async function POST(request: Request) {
     });
 
     return NextResponse.json(newProduct, { status: 201 });
-  } catch (error) {
+  } catch (_error) {
     return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
