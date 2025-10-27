@@ -12,6 +12,7 @@ import axios from 'axios';
 
 type ProjectsState = {
     projects: Project[];
+    selectedProject: Project | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
 };
@@ -27,6 +28,7 @@ type UpdateProjectPayload = {
 
 const initialState: ProjectsState = {
     projects: [],
+    selectedProject: null,
     status: 'idle',
     error: null,
 };
@@ -80,6 +82,15 @@ export const deleteProject = createAsyncThunk('projects/deleteProject', async (p
     }
 });
 
+export const fetchProjectById = createAsyncThunk('projects/fetchProjectById', async (projectId: string, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.get<Project>(`/projects/${projectId}`);
+        return response.data;
+    } catch (error: unknown) {
+        return rejectWithValue('Projet non trouvé.');
+    }
+});
+
 // ==================================
 // SLICE
 // ==================================
@@ -110,7 +121,19 @@ const projectsSlice = createSlice({
             })
             .addCase(deleteProject.fulfilled, (state, action: PayloadAction<string>) => {
                 state.projects = state.projects.filter(p => p.id !== action.payload);
-            });
+            })
+            .addCase(fetchProjectById.pending, (state) => {
+                state.status = 'loading';
+                state.selectedProject = null;
+            })
+            .addCase(fetchProjectById.fulfilled, (state, action: PayloadAction<Project>) => {
+                state.status = 'succeeded';
+                state.selectedProject = action.payload;
+            })
+            .addCase(fetchProjectById.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload as string;
+            })
     },
 });
 

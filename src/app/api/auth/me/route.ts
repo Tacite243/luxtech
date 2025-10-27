@@ -1,6 +1,6 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import { authOptions } from '../[...nextauth]/route';
+import { authOptions } from '@/lib/auth';
 import { getUserById, updateUser, deleteUser } from '@/services/auth.service';
 import { updateUserSchema } from '@/lib/validators/auth.validator';
 

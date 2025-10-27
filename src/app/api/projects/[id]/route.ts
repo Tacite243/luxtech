@@ -1,13 +1,11 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { updateProjectSchema } from '@/lib/validators/project.validator';
 
-interface RouteContext {
-    params: { id: string };
-}
+
 
 // GET: Récupérer un projet spécifique
-export async function GET(request: Request, { params }: RouteContext) {
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const project = await prisma.project.findUnique({ where: { id } });
@@ -22,7 +20,7 @@ export async function GET(request: Request, { params }: RouteContext) {
 }
 
 // PUT: Mettre à jour un projet
-export async function PUT(request: Request, { params }: RouteContext) {
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const body = await request.json();
@@ -43,7 +41,7 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 // DELETE: Supprimer un projet
-export async function DELETE(request: Request, { params }: RouteContext) {
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         await prisma.project.delete({ where: { id } });

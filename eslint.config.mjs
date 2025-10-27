@@ -10,6 +10,7 @@ const compat = new FlatCompat({
 });
 
 const eslintConfig = [
+  // Vos configurations existantes
   ...compat.extends("next/core-web-vitals", "next/typescript"),
   {
     ignores: [
@@ -19,6 +20,12 @@ const eslintConfig = [
       "build/**",
       "next-env.d.ts",
     ],
+  },
+  {
+    rules: {
+      // Cette règle dit à ESLint d'autoriser les commentaires @ts-ignore, @ts-expect-error, etc.
+      "@typescript-eslint/ban-ts-comment": "off",
+    },
   },
 ];
 

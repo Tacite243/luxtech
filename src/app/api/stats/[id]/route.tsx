@@ -1,4 +1,4 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { prisma } from '@/lib/prisma';
 import { z } from 'zod';
 
@@ -10,12 +10,11 @@ const updateStatSchema = z.object({
     order: z.number().int().optional(),
 });
 
-interface RouteContext {
-    params: { id: string };
-}
+
 
 // PUT: Mettre à jour une statistique
-export async function PUT(request: Request, { params }: RouteContext) {
+
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const body = await request.json();
@@ -36,7 +35,8 @@ export async function PUT(request: Request, { params }: RouteContext) {
 }
 
 // DELETE: Supprimer une statistique
-export async function DELETE(request: Request, { params }: RouteContext) {
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         await prisma.stat.delete({ where: { id } });

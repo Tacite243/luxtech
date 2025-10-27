@@ -1,11 +1,7 @@
-import { NextResponse } from 'next/server';
+import { NextResponse, NextRequest } from 'next/server';
 import { updateUser, deleteUser, getUserById } from '@/services/auth.service';
 import { z } from 'zod';
-import { Role } from '@prisma/client';
-import { Prisma } from '@prisma/client';
-
-
-
+import { Role, Prisma } from '@prisma/client';
 
 // Schéma pour la mise à jour par un admin
 const adminUpdateUserSchema = z.object({
@@ -14,14 +10,10 @@ const adminUpdateUserSchema = z.object({
     role: z.nativeEnum(Role).optional(),
 });
 
-interface RouteContext {
-    params: { id: string };
-}
 
-// ==================================
 // GET: Récupérer un utilisateur spécifique
-// ==================================
-export async function GET(request: Request, { params }: RouteContext) {
+
+export async function GET(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const user = await getUserById(id);
@@ -30,16 +22,15 @@ export async function GET(request: Request, { params }: RouteContext) {
             return NextResponse.json({ error: 'Utilisateur non trouvé' }, { status: 404 });
         }
         return NextResponse.json(user);
-    } catch (_error) {
+    } catch (error) {
         console.error("Erreur [GET /api/users/[id]]:", error);
         return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
     }
 }
 
-// ==================================
 // PUT: Mettre à jour un utilisateur (rôle, nom, etc.)
-// ==================================
-export async function PUT(request: Request, { params }: RouteContext) {
+
+export async function PUT(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         const body = await request.json();
@@ -61,10 +52,9 @@ export async function PUT(request: Request, { params }: RouteContext) {
     }
 }
 
-// ==================================
 // DELETE: Supprimer un utilisateur
-// ==================================
-export async function DELETE(request: Request, { params }: RouteContext) {
+
+export async function DELETE(request: NextRequest, { params }: { params: { id: string } }) {
     try {
         const { id } = params;
         await deleteUser(id);
