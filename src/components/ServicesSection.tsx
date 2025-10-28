@@ -4,12 +4,12 @@ import { motion, Variants } from 'framer-motion';
 import { Zap, Paintbrush, HardHat, ArrowRight, Key, BrainCircuit, Wrench } from 'lucide-react';
 
 const servicesData = [
-    { icon: HardHat, title: "Construction Moderne & Durable", description: "Réalisation de constructions clés en main, respectant les normes de qualité et de sécurité les plus strictes, de l'étude à la réalisation." },
-    { icon: Zap, title: "Installations Électriques & Sécurité", description: "Installation complète de réseaux, mise en place de systèmes de protection, et dépannage rapide pour garantir votre sécurité et tranquillité d'esprit." },
-    { icon: Paintbrush, title: "Design & Agencement Intérieur", description: "Conception d'espaces fonctionnels et esthétiques : faux plafonds design, luminaires décoratifs, peintures modernes et sols élégants." },
-    { icon: BrainCircuit, title: "Solutions Domotiques Intelligentes", description: "Intégration de solutions innovantes et économes en énergie, comme l'éclairage LED intelligent et la domotique pour un confort de vie simplifié." },
-    { icon: Key, title: "Projets Clés en Main", description: "Nous gérons votre projet de A à Z. De l'étude de faisabilité à la livraison finale, nous assurons un suivi attentif pour une valeur ajoutée réelle." },
-    { icon: Wrench, title: "Dépannage & Maintenance", description: "Un service professionnel et personnalisé pour la maintenance de vos installations et un dépannage efficace pour assurer leur fiabilité à long terme." }
+    { icon: HardHat, title: "Construction Moderne & Durable", description: "Réalisation de constructions clés en main, respectant les normes de qualité et de sécurité les plus strictes, de l'étude à la réalisation.", link: '/services/1' },
+    { icon: Zap, title: "Installations Électriques & Sécurité", description: "Installation complète de réseaux, mise en place de systèmes de protection, et dépannage rapide pour garantir votre sécurité et tranquillité d'esprit.", link: '/services/2' },
+    { icon: Paintbrush, title: "Design & Agencement Intérieur", description: "Conception d'espaces fonctionnels et esthétiques : faux plafonds design, luminaires décoratifs, peintures modernes et sols élégants.", link: '/services/3' },
+    { icon: BrainCircuit, title: "Solutions Domotiques Intelligentes", description: "Intégration de solutions innovantes et économes en énergie, comme l'éclairage LED intelligent et la domotique pour un confort de vie simplifié.", link: '/services/4' },
+    { icon: Key, title: "Projets Clés en Main", description: "Nous gérons votre projet de A à Z. De l'étude de faisabilité à la livraison finale, nous assurons un suivi attentif pour une valeur ajoutée réelle.", link: '/services/5' },
+    { icon: Wrench, title: "Dépannage & Maintenance", description: "Un service professionnel et personnalisé pour la maintenance de vos installations et un dépannage efficace pour assurer leur fiabilité à long terme.", link: '/services/6' }
 ];
 
 // Variante pour l'animation des éléments enfants (fade in + slide up)
@@ -64,7 +64,7 @@ export default function ServicesSection() {
                             </div>
                             <h3 className="text-xl font-bold mb-3 text-[#000000]">{service.title}</h3>
                             <p className="text-[#6b7280] mb-6 flex-grow">{service.description}</p>
-                            <a href="#" className="font-semibold text-[#FF0000] inline-flex items-center justify-center group mt-auto">
+                            <a href={service.link} className="font-semibold text-[#FF0000] inline-flex items-center justify-center group mt-auto">
                                 En savoir plus
                                 <ArrowRight size={16} className="ml-2 transition-transform duration-300 group-hover:translate-x-1" />
                             </a>

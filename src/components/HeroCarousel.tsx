@@ -4,6 +4,7 @@ import { useState, useEffect, useCallback } from 'react';
 import { motion, AnimatePresence, Variants } from 'framer-motion';
 import { FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import Image from 'next/image';
+import Link from 'next/link';
 
 const images = [
     '/img/hero-carousel/hero-carousel-1.jpg',
@@ -103,7 +104,7 @@ export default function HeroSection() {
                     // Bouton ROUGE (#FF0000) avec texte BLANC (#FFFFFF)
                     className="mt-8 px-8 py-3 font-semibold rounded-md bg-[#FF0000] text-[#FFFFFF] hover:bg-[#D90000] transition-all duration-300"
                 >
-                    Découvrir nos services
+                    <Link href="/services">Découvrir nos services</Link>
                 </motion.button>
             </div>
 
