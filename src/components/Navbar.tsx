@@ -4,18 +4,16 @@ import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
-import { ShoppingCart } from 'lucide-react';
+import { X, ShoppingCart } from 'lucide-react';
 import { useAppSelector } from '@/redux/hooks';
-
 
 const navLinks = [
   { name: 'Accueil', href: '/' },
   { name: 'À Propos', href: '/about' },
   { name: 'Services', href: '/services' },
   { name: 'Projets', href: '/projets' },
-  { name: 'Boutique', href: '/store' },
   { name: 'Contact', href: '/contact' },
+  { name: 'Boutique', href: '/store' },
 ];
 
 export default function Navbar() {
@@ -23,24 +21,14 @@ export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
   const cartItems = useAppSelector((state) => state.cart.items);
-  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0)
+  const totalItems = cartItems.reduce((total, item) => total + item.quantity, 0);
 
-
-  // Hook pour détecter le défilement
   useEffect(() => {
-    const handleScroll = () => {
-      // Si on a défilé de plus de 10px, on met `scrolled` à true
-      setScrolled(window.scrollY > 10);
-    };
-
-    // Ajouter l'écouteur d'événement
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
-
-    // Nettoyer l'écouteur quand le composant est démonté (très important !)
     return () => window.removeEventListener('scroll', handleScroll);
-  }, []); // Le tableau vide signifie que cet effet ne s'exécute qu'une fois (au montage)
+  }, []);
 
-  // Icône personnalisée pour le menu burger
   const BurgerIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" className="h-7 w-7" fill="none" viewBox="0 0 24 24" stroke="currentColor">
       <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 6h16M4 12h16m-7 6h7" />
@@ -48,10 +36,10 @@ export default function Navbar() {
   );
 
   return (
-    // Les classes de l'en-tête changent dynamiquement
     <header
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${scrolled ? 'bg-[#111827]/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
-        }`}
+      className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ease-in-out ${
+        scrolled ? 'bg-[#111827]/90 backdrop-blur-sm shadow-lg' : 'bg-transparent'
+      }`}
     >
       <nav className="container mx-auto px-6 py-4">
         <div className="flex items-center justify-between">
@@ -59,19 +47,29 @@ export default function Navbar() {
             Lux<span className="text-[#FBBF24]">Tech</span>
           </Link>
 
+          {/* --- NAV LINKS --- */}
           <div className="hidden md:flex items-center space-x-8">
             {navLinks.map((link) => {
               const isActive = pathname === link.href;
+              const isStore = link.name === 'Boutique';
+
+              // Style spécial pour "Boutique"
+              const baseClasses = `relative text-lg font-medium transition-colors duration-300`;
+              const normalLink = `${baseClasses} ${
+                isActive ? 'text-[#FBBF24]' : 'text-gray-200 hover:text-white'
+              }`;
+              const storeLink = `${baseClasses} border border-[#FBBF24] px-4 py-1 rounded-lg hover:bg-[#FBBF24] hover:text-[#111827] transition-all duration-300 ${
+                isActive ? 'bg-[#FBBF24] text-[#111827]' : 'text-[#FBBF24]'
+              }`;
+
               return (
                 <Link
                   key={link.name}
                   href={link.href}
-                  // Le texte change de couleur pour rester lisible sur la Hero Section
-                  className={`relative text-lg font-medium transition-colors duration-300 ${isActive ? 'text-[#FBBF24]' : 'text-gray-200 hover:text-white'
-                    }`}
+                  className={isStore ? storeLink : normalLink}
                 >
                   {link.name}
-                  {isActive && (
+                  {!isStore && isActive && (
                     <motion.span
                       layoutId="underline"
                       className="absolute left-0 -bottom-1 block h-0.5 w-full bg-[#FBBF24]"
@@ -81,18 +79,24 @@ export default function Navbar() {
                 </Link>
               );
             })}
+
+            {/* Icône du panier desktop */}
+            <Link href="/cart" className="relative text-gray-200 hover:text-white ml-3">
+              <ShoppingCart size={24} />
+              {totalItems > 0 && (
+                <span className="absolute -top-2 -right-3 flex items-center justify-center w-5 h-5 bg-[#FBBF24] text-[#111827] text-xs font-bold rounded-full">
+                  {totalItems}
+                </span>
+              )}
+            </Link>
           </div>
 
-          {/* <div className="md:hidden">
-            <button onClick={() => setIsOpen(!isOpen)} className="text-white z-50 relative">
-              {isOpen ? <X size={28} /> : <Menu size={28} />}
-            </button>
-          </div> */}
+          {/* --- MENU BURGER --- */}
           <div className="md:hidden">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="text-white z-50 relative p-2 -mr-2" // Zone de clic plus grande
-              whileTap={{ scale: 0.9 }} // Effet de clic
+              className="text-white z-50 relative p-2 -mr-2"
+              whileTap={{ scale: 0.9 }}
             >
               <AnimatePresence initial={false} mode="wait">
                 <motion.div
@@ -102,7 +106,6 @@ export default function Navbar() {
                   exit={{ rotate: 90, opacity: 0 }}
                   transition={{ duration: 0.2 }}
                 >
-                  {/* On affiche l'icône X ou notre BurgerIcon personnalisé */}
                   {isOpen ? <X size={28} /> : <BurgerIcon />}
                 </motion.div>
               </AnimatePresence>
@@ -111,7 +114,7 @@ export default function Navbar() {
         </div>
       </nav>
 
-      {/* Le menu mobile reste inchangé, son design est déjà bon pour un overlay */}
+      {/* --- MENU MOBILE --- */}
       <AnimatePresence>
         {isOpen && (
           <motion.div
@@ -124,23 +127,30 @@ export default function Navbar() {
             <div className="flex flex-col items-center justify-center h-full">
               <ul className="space-y-8 text-center">
                 {navLinks.map((link) => {
-                  // On recalcule `isActive` à l'intérieur de cette boucle
                   const isActive = pathname === link.href;
+                  const isStore = link.name === 'Boutique';
 
                   return (
                     <li key={`mobile-${link.name}`}>
                       <Link
                         href={link.href}
                         onClick={() => setIsOpen(false)}
-                        // On utilise une classe dynamique comme pour le desktop
-                        className={`text-3xl font-semibold transition-colors ${isActive ? 'text-[#FBBF24]' : 'text-gray-200 hover:text-[#FBBF24]'
-                          }`}
+                        className={`text-3xl font-semibold transition-colors ${
+                          isStore
+                            ? `border border-[#FBBF24] px-6 py-2 rounded-lg hover:bg-[#FBBF24] hover:text-[#111827] transition-all duration-300 ${
+                                isActive ? 'bg-[#FBBF24] text-[#111827]' : 'text-[#FBBF24]'
+                              }`
+                            : isActive
+                            ? 'text-[#FBBF24]'
+                            : 'text-gray-200 hover:text-[#FBBF24]'
+                        }`}
                       >
                         {link.name}
                       </Link>
                     </li>
                   );
                 })}
+
                 <li>
                   <Link href="/cart" className="relative text-gray-200 hover:text-white">
                     <ShoppingCart size={24} />
@@ -158,4 +168,4 @@ export default function Navbar() {
       </AnimatePresence>
     </header>
   );
-};
+}
