@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { ImageIcon, ShoppingCart, Star } from 'lucide-react';
-// import type { Product } from '@/lib/products-data';
 import { Product } from '@prisma/client';
 import { useAppDispatch } from '@/redux/hooks';
 import { addToCart } from '@/redux/features/cartSlice';
@@ -24,7 +23,7 @@ export default function ProductCard({ product }: { product: Product }) {
     const dispatch = useAppDispatch();
     // Logique pour déterminer si l'article est en promotion
     // const onSale = typeof product.salePrice === 'number' && product.salePrice < product.price;
-    const displayPrice = product.price;
+    const displayPrice = product.price ?? 0;
     const imageUrl = product.images && product.images.length > 0 ? product.images[0] : null;
     // const originalPrice = onSale ? product.price : null;
 

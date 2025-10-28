@@ -31,7 +31,11 @@ export default function CartPage() {
         dispatch(removeFromCart(productId));
     };
 
-    const subtotal = cartItems.reduce((total, item) => total + item.price * item.quantity, 0);
+    const subtotal = cartItems.reduce((total, item) => {
+        // On vérifie que le prix est un nombre avant de l'ajouter
+        const price = item.price ?? 0;
+        return total + price * item.quantity;
+    }, 0);
 
     return (
         // --- 1. Intégration de la structure de page standard ---
