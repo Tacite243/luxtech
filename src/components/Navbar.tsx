@@ -87,7 +87,7 @@ export default function Navbar() {
               );
             })}
 
-            <Link href="/cart" className="relative text-gray-200 hover:text-white ml-3">
+            <Link href="/store/cart" className="relative text-gray-200 hover:text-white ml-3">
               <ShoppingCart size={24} />
               {isClient && totalItems > 0 && (
                 <span className="absolute -top-2 -right-3 flex items-center justify-center w-5 h-5 bg-[#FBBF24] text-[#111827] text-xs font-bold rounded-full">

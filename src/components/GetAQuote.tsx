@@ -5,7 +5,7 @@ import { useForm, SubmitHandler } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { sendQuoteRequest, resetQuoteState } from '@/redux/features/quoteSlice';
+import { sendQuoteRequest, resetQuoteState } from '@/redux/features/quotesSlice';
 import toast from 'react-hot-toast';
 import { useEffect } from 'react';
 import { Loader2 } from 'lucide-react';
@@ -39,7 +39,7 @@ const containerVariants: Variants = {
 
 export default function GetAQuote() {
   const dispatch = useAppDispatch();
-  const { status, error } = useAppSelector((state) => state.quote);
+  const { status, error } = useAppSelector((state) => state.quotes);
 
   const { register, handleSubmit, reset, formState: { errors } } = useForm<QuoteFormValues>({
     resolver: zodResolver(quoteSchema),

@@ -6,38 +6,39 @@ export default withAuth(
         const { token } = req.nextauth;
         const { pathname } = req.nextUrl;
 
-        // Protéger les routes API d'administration
-        if (pathname.startsWith('/api/products') || pathname.startsWith('/api/public')) {
+        // --- RÈGLE GÉNÉRIQUE POUR LES ROUTES D'ADMINISTRATION API ---
+        // On regroupe toutes les routes qui nécessitent un rôle ADMIN ou SUPERADMIN
+        const adminApiRoutes = [
+            '/api/products',
+            '/api/projects',
+            '/api/stats',
+            '/api/quotes',
+            '/api/public'
+        ];
+
+        if (adminApiRoutes.some(route => pathname.startsWith(route))) {
             if (token?.role !== 'ADMIN' && token?.role !== 'SUPERADMIN') {
                 return new NextResponse('Accès non autorisé', { status: 403 });
             }
         }
 
-        // Protéger les routes API de super-administration
+        // --- RÈGLE SPÉCIFIQUE POUR LA GESTION DES UTILISATEURS (SUPERADMIN) ---
         if (pathname.startsWith('/api/users')) {
             if (token?.role !== 'SUPERADMIN') {
                 return new NextResponse('Accès refusé. Seul un Super Administrateur peut gérer les utilisateurs.', { status: 403 });
             }
         }
 
-        // Protéger le backoffice (si vous en avez un)
-        if (pathname.startsWith('/admin')) {
+        // --- RÈGLE POUR L'ACCÈS AU DASHBOARD (FRONTEND) ---
+        if (pathname.startsWith('/dashboard')) {
             if (token?.role !== 'ADMIN' && token?.role !== 'SUPERADMIN') {
-                return new NextResponse('Accès non autorisé', { status: 403 });
+                return NextResponse.redirect(new URL('/', req.url));
             }
         }
-    // Si l'utilisateur essaie d'accéder à /dashboard/*
-    if (pathname.startsWith('/dashboard')) {
-      // Et qu'il n'est ni ADMIN ni SUPERADMIN
-      if (token?.role !== 'ADMIN' && token?.role !== 'SUPERADMIN') {
-        // On le redirige vers la page d'accueil (ou une page "accès refusé")
-        return NextResponse.redirect(new URL('/', req.url));
-      }
-    }
     },
     {
         callbacks: {
-            authorized: ({ token }) => !!token, // L'utilisateur doit être connecté pour accéder à toute route matchée
+            authorized: ({ token }) => !!token,
         },
     }
 );
@@ -45,13 +46,15 @@ export default withAuth(
 // Appliquer le middleware à des routes spécifiques
 export const config = {
     matcher: [
+        /* Protéger toutes les routes du dashboard et les API admin */
+        '/dashboard/:path*',
         '/api/products/:path*',
+        '/api/projects/:path*',
+        '/api/stats/:path*',
+        '/api/quotes/:path*',
         '/api/users/:path*',
         '/api/orders/:path*',
         '/api/public/:path*',
-        '/dashboard/:path*', // Dashboard admin
-        '/me', // Espace membre
-        '/api/stats/:path*',
-        '/api/projects/:path*',
+        '/me',
     ],
 };
