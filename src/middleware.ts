@@ -13,7 +13,8 @@ export default withAuth(
             '/api/projects',
             '/api/stats',
             '/api/quotes',
-            '/api/public'
+            '/api/public',
+            '/api/orders'
         ];
 
         if (adminApiRoutes.some(route => pathname.startsWith(route))) {

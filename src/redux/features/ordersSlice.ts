@@ -1,9 +1,14 @@
 import { createSlice, createAsyncThunk, PayloadAction } from '@reduxjs/toolkit';
 import axios from 'axios';
 import axiosInstance from '@/lib/axiosInstance';
-import { Order } from '@prisma/client';
+import { Order, User } from '@prisma/client';
 
 
+
+// Étendre le type Order pour inclure les infos de l'utilisateur
+export interface OrderWithUser extends Order {
+    user: Partial<User>;
+}
 
 // ==================================
 // TYPES
@@ -25,6 +30,7 @@ type CreateOrderSuccessResponse = {
 
 type OrdersState = {
     // Stocke la dernière commande créée pour potentiellement afficher une page de confirmation
+    orders: OrderWithUser[],
     latestOrder: Order | null;
     status: 'idle' | 'loading' | 'succeeded' | 'failed';
     error: string | null;
@@ -35,6 +41,7 @@ type OrdersState = {
 // ==================================
 
 const initialState: OrdersState = {
+    orders: [],
     latestOrder: null,
     status: 'idle',
     error: null,
@@ -43,6 +50,15 @@ const initialState: OrdersState = {
 // ==================================
 // THUNK ASYNCHRONE
 // ==================================
+
+export const fetchOrders = createAsyncThunk('orders/fetchOrders', async (_, { rejectWithValue }) => {
+    try {
+        const response = await axiosInstance.get<OrderWithUser[]>('/orders');
+        return response.data;
+    } catch (error) {
+        return rejectWithValue('Erreur lors du chargement des commandes.');
+    }
+});
 
 export const createOrder = createAsyncThunk(
     'orders/createOrder',
@@ -92,6 +108,17 @@ const ordersSlice = createSlice({
                 }
             })
             .addCase(createOrder.rejected, (state, action) => {
+                state.status = 'failed';
+                state.error = action.payload as string;
+            })
+            .addCase(fetchOrders.pending, (state) => {
+                state.status = 'loading';
+            })
+            .addCase(fetchOrders.fulfilled, (state, action: PayloadAction<OrderWithUser[]>) => {
+                state.status = 'succeeded';
+                state.orders = action.payload;
+            })
+            .addCase(fetchOrders.rejected, (state, action) => {
                 state.status = 'failed';
                 state.error = action.payload as string;
             });

@@ -119,3 +119,24 @@ export async function POST(request: Request) {
     return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
   }
 }
+
+// --- GET pour lister toutes les commandes ---
+export async function GET() {
+  try {
+    const orders = await prisma.order.findMany({
+      orderBy: { createdAt: 'desc' },
+      // Inclure les informations de l'utilisateur associé à chaque commande
+      include: {
+        user: {
+          select: {
+            name: true,
+            email: true,
+          }
+        }
+      }
+    });
+    return NextResponse.json(orders);
+  } catch (_error) {
+    return NextResponse.json({ error: 'Erreur interne du serveur' }, { status: 500 });
+  }
+}
