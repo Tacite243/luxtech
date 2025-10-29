@@ -8,6 +8,7 @@ import projectsReducer from './features/projectsSlices';
 import usersReducer from './features/usersSlice';
 import orderReducer from './features/ordersSlice';
 import cartReducer from './features/cartSlice';
+import quoteReducer from './features/quoteSlice';
 
 
 
@@ -23,6 +24,7 @@ export const makeStore = () => {
             users: usersReducer,
             orders: orderReducer,
             cart: cartReducer,
+            quote: quoteReducer,
         },
         // Activer les Redux DevTools uniquement en développement
         devTools: process.env.NODE_ENV !== 'production',
