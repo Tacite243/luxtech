@@ -15,7 +15,7 @@ const ourServices = [
   { name: 'Design Intérieur', href: '/services/3' },
   { name: 'Solutions Domotiques', href: '/services/4' },
   { name: 'Dépannage & Maintenance', href: '/services/6' },
-  { name: 'Vente des matériels & matériaux de construction', href: '/store' }
+  { name: 'Boutique', href: '/store' }
 ];
 
 export default function Footer() {
@@ -41,7 +41,7 @@ export default function Footer() {
 
           {/* Colonne 2: Liens utiles */}
           <div>
-            <h4 className="font-semibold mb-4 text-lg">Liens Utiles</h4>
+            <h4 className="font-semibold mb-4 text-lg">Menu</h4>
             <ul>
               {usefulLinks.map(link => (
                 <li key={link.name} className="mb-2">

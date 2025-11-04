@@ -46,10 +46,10 @@ const contactInfoItems: ContactInfo[] = [
     {
         icon: Phone,
         title: "Appelez-nous",
-        details: ["+243 997 354 382"],
+        details: ["+243 836 450 156"],
         linkType: 'tel',
         // Format international sans espaces ni caractères spéciaux pour `tel:`
-        linkValue: '+243997354382'
+        linkValue: '+243836450156'
     },
 ];
 
