@@ -6,12 +6,13 @@ import { SubmitHandler, useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
 import { useAppDispatch, useAppSelector } from '@/redux/hooks';
-import { fetchUser, registerUser } from '@/redux/features/authSlice';
+import { fetchUser, registerUser, User } from '@/redux/features/authSlice';
 import { Loader2, LogIn, UserPlus } from 'lucide-react';
 import toast from 'react-hot-toast';
 import { signIn } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-import { GoogleIcon, AppleIcon } from './SocialIcons'; // Assurez-vous que ce chemin est correct
+import { GoogleIcon, AppleIcon } from './SocialIcons';
+
 
 // Schémas de validation Zod
 const loginSchema = z.object({
@@ -38,6 +39,20 @@ export default function AuthForm() {
     const { register: loginRegister, handleSubmit: handleLoginSubmit, formState: { errors: loginErrors } } = useForm<LoginFormValues>({ resolver: zodResolver(loginSchema) });
     const { register: registerRegister, handleSubmit: handleRegisterSubmit, reset: resetRegisterForm, formState: { errors: registerErrors } } = useForm<RegisterFormValues>({ resolver: zodResolver(registerSchema) });
 
+    // --- Fonction de redirection centralisée ---
+    const handleRedirect = (user: User | null) => {
+        if (!user) {
+            router.push('/'); // Redirection par défaut si l'utilisateur n'est pas trouvé
+            return
+        };
+        // Rediriger en fonction du rôle
+        if (user.role === 'ADMIN' || user.role === 'SUPERADMIN') {
+            router.push('/dashboard');
+        } else {
+            router.push('/store'); // Redirection par défaut pour les USER
+        };
+    };
+
     const onLogin: SubmitHandler<LoginFormValues> = async (data) => {
         const result = await signIn('credentials', {
             redirect: false,
@@ -49,17 +64,19 @@ export default function AuthForm() {
             toast.error(result.error);
         } else {
             toast.success('Connexion réussie !');
-            await dispatch(fetchUser());
-            router.push('/dashboard'); // Rediriger après la connexion
-        }
+            // Récupérer les infos utilisateur et ensuite rediriger
+            const userResult = await dispatch(fetchUser()).unwrap();
+            handleRedirect(userResult);
+        };
     };
 
     const onRegister: SubmitHandler<RegisterFormValues> = async (data) => {
         await dispatch(registerUser(data)).unwrap()
             .then(() => {
-                toast.success('Inscription réussie ! Veuillez vous connecter.');
-                setIsLogin(true);
+                toast.success('Inscription réussie ! Vous serrez redirigé dans le store.');
+                setIsLogin(true); // Basculer vers le mode connexion
                 resetRegisterForm(); // Vider les champs du formulaire d'inscription
+                router.push('/redirecting')
             })
             .catch((err: unknown) => {
                 const errorMessage = typeof err === 'string' ? err : "Une erreur est survenue."
@@ -87,14 +104,14 @@ export default function AuthForm() {
 
             <div className="space-y-3 mb-4">
                 <button
-                    onClick={() => signIn('google', { callbackUrl: '/dashboard' })}
+                    onClick={() => signIn('google', { callbackUrl: '/redirecting' })}
                     className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-gray-300 rounded-lg shadow-sm hover:bg-gray-50 transition-colors"
                 >
                     <GoogleIcon />
                     <span className="font-semibold text-gray-700 text-sm">Continuer avec Google</span>
                 </button>
                 <button
-                    onClick={() => signIn('apple', { callbackUrl: '/dashboard' })}
+                    onClick={() => signIn('apple', { callbackUrl: '/redirecting' })}
                     className="w-full flex items-center justify-center gap-3 py-2.5 px-4 border border-gray-800 rounded-lg shadow-sm bg-black text-white hover:bg-gray-800 transition-colors"
                 >
                     <AppleIcon />

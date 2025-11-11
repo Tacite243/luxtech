@@ -55,7 +55,7 @@ export const config = {
         '/api/quotes/:path*',
         '/api/users/:path*',
         '/api/orders/:path*',
-        '/api/public/:path*',
+        // '/api/public/:path*',
         '/me',
     ],
 };
