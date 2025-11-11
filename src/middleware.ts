@@ -35,13 +35,20 @@ export default withAuth(
             if (token?.role !== 'ADMIN' && token?.role !== 'SUPERADMIN') {
                 return NextResponse.redirect(new URL('/', req.url));
             }
+            return NextResponse.redirect(new URL('/store', req.url));
         }
     },
     {
         callbacks: {
-            authorized: ({ token }) => !!token,
+            // Cette fonction est appelée pour TOUTES les routes du `matcher`.
+            // Si elle renvoie `false`, l'utilisateur est redirigé vers la page de connexion.
+            authorized: ({ token }) => !!token, // `!!token` est une façon courte de dire `token != null`s
         },
-    }
+        pages: {
+            // Personnaliser la page vers laquelle les utilisateurs non authentifiés sont redirigés.
+            signIn: '/login',
+        }
+    },
 );
 
 // Appliquer le middleware à des routes spécifiques
@@ -57,5 +64,7 @@ export const config = {
         '/api/orders/:path*',
         // '/api/public/:path*',
         '/me',
+        '/store/:path*',
+        '/cart/:path*',
     ],
 };
