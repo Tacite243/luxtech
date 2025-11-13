@@ -1,0 +1,66 @@
+name: 🚀 Déploiement Next.js sur cPanel
+
+on:
+  push:
+    branches:
+      - main  # déploie automatiquement à chaque push sur main
+
+jobs:
+  deploy:
+    name: Build & Deploy Next.js vers cPanel
+    runs-on: ubuntu-latest
+
+    steps:
+      # Étape 1 : Récupérer le code du dépôt
+      - name: 📦 Checkout du code
+        uses: actions/checkout@v4
+
+      # Étape 2 : Configuration de Node.js
+      - name: ⚙️ Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      # Étape 3 : Installer les dépendances
+      - name: 📥 Installation des dépendances
+        run: npm ci
+
+      # Étape 4 : Build du projet
+      - name: 🛠️ Build du projet Next.js
+        env:
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+          NODE_ENV: production
+        run: npm run build
+
+      # Étape 5 : Export statique (si applicable)
+      # Si ton projet utilise next export (pas obligatoire si tu fais SSR)
+      - name: 📤 Export statique (optionnel)
+        run: |
+          if npm run | grep -q "export"; then
+            npm run export
+          fi
+
+      # Étape 6 : Préparer les fichiers à déployer
+      - name: 🧹 Préparer les fichiers
+        run: |
+          mkdir deploy
+          cp -R .next public package.json next.config.mjs deploy/
+          cp -R node_modules deploy/node_modules || echo "node_modules non inclus"
+          echo "Fichiers prêts pour le déploiement"
+
+      # Étape 7 : Déploiement FTP vers cPanel
+      - name: 📡 Déploiement sur cPanel
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.4
+        with:
+          server: ${{ secrets.CPANEL_FTP_SERVER }}
+          username: ${{ secrets.CPANEL_FTP_USERNAME }}
+          password: ${{ secrets.CPANEL_FTP_PASSWORD }}
+          server-dir: /public_html/ # le répertoire distant (à adapter)
+          local-dir: ./deploy
+          exclude: |
+            **/.git*
+            **/.github*
+            **/node_modules/*
+            **/README.md
+            **/.env*
