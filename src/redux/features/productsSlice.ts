@@ -35,7 +35,7 @@ const initialState: ProductsState = {
 
 export const fetchProducts = createAsyncThunk('products/fetchProducts', async (_, { rejectWithValue }) => {
   try {
-    const response = await axiosInstance.get<Product[]>('/products');
+    const response = await axiosInstance.get<Product[]>('/public/products');
     return response.data;
   } catch (error: unknown) {
     if (axios.isAxiosError(error) && error.response) {
@@ -116,7 +116,7 @@ const productsSlice = createSlice({
           state.products[index] = action.payload;
         }
       })
-      
+
       // Delete Product (Mise à jour optimiste)
       // Il ne doit y avoir qu'UN SEUL .addCase pour cette action.
       .addCase(deleteProduct.fulfilled, (state, action: PayloadAction<string>) => {
