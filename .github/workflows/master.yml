@@ -79,7 +79,7 @@ jobs:
       - name: 🧹 Préparer les fichiers pour le déploiement
         run: |
           mkdir deploy
-          cp -R .next public package.json next.config.mjs prisma deploy/
+          cp -R .next public package.json next.config.ts prisma deploy/
           echo "✅ Fichiers préparés pour le déploiement"
 
       # Étape 8 : Déploiement FTP vers cPanel
