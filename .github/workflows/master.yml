@@ -3,7 +3,7 @@ name: 🚀 Déploiement Next.js sur cPanel
 on:
   push:
     branches:
-      - master  # déploie automatiquement à chaque push sur master
+      - master # déploie automatiquement à chaque push sur master
 
 jobs:
   deploy:
@@ -23,40 +23,73 @@ jobs:
 
       # Étape 3 : Installer les dépendances
       - name: 📥 Installation des dépendances
-        run: npm install
+        run: npm ci
 
-      # Étape 4 : Build du projet
-      - name: 🛠️ Build du projet Next.js
+      # Étape 4 : Migration Prisma (synchronisation de la DB)
+      - name: 🗄️ Exécuter les migrations Prisma
         env:
           DATABASE_URL: ${{ secrets.DATABASE_URL }}
-          NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
+        run: |
+          npx prisma migrate deploy
+          npx prisma generate
+          echo "✅ Migrations Prisma exécutées avec succès."
+
+      # Étape 5 : Build du projet Next.js
+      - name: 🛠️ Build du projet Next.js
+        env:
           NODE_ENV: production
+
+          # ====== Base de données ======
+          DATABASE_URL: ${{ secrets.DATABASE_URL }}
+
+          # ====== Authentification ======
+          NEXTAUTH_URL: ${{ secrets.NEXTAUTH_URL }}
+          NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+          # ====== Providers OAuth ======
+          GOOGLE_CLIENT_ID: ${{ secrets.GOOGLE_CLIENT_ID }}
+          GOOGLE_CLIENT_SECRET: ${{ secrets.GOOGLE_CLIENT_SECRET }}
+          APPLE_CLIENT_ID: ${{ secrets.APPLE_CLIENT_ID }}
+          APPLE_CLIENT_SECRET: ${{ secrets.APPLE_CLIENT_SECRET }}
+
+          # ====== Services tiers ======
+          RESEND_API_KEY: ${{ secrets.RESEND_API_KEY }}
+          TO_EMAIL: ${{ secrets.TO_EMAIL }}
+
+          # ====== Airtel Money ======
+          AIRTEL_API_BASE_URL: ${{ secrets.AIRTEL_API_BASE_URL }}
+          AIRTEL_CLIENT_ID: ${{ secrets.AIRTEL_CLIENT_ID }}
+          AIRTEL_CLIENT_SECRET: ${{ secrets.AIRTEL_CLIENT_SECRET }}
+          AIRTEL_API_PIN: ${{ secrets.AIRTEL_API_PIN }}
+          AIRTEL_MERCHANT_MSISDN: ${{ secrets.AIRTEL_MERCHANT_MSISDN }}
+
+          # ====== Application ======
+          SUPERADMIN_EMAIL: ${{ secrets.SUPERADMIN_EMAIL }}
+          SUPERADMIN_PASSWORD: ${{ secrets.SUPERADMIN_PASSWORD }}
         run: npm run build
 
-      # Étape 5 : Export statique (si applicable)
-      # Si ton projet utilise next export (pas obligatoire si tu fais SSR)
+      # Étape 6 : (Optionnel) Export statique si tu veux un site pur HTML
       - name: 📤 Export statique (optionnel)
         run: |
           if npm run | grep -q "export"; then
             npm run export
           fi
 
-      # Étape 6 : Préparer les fichiers à déployer
-      - name: 🧹 Préparer les fichiers
+      # Étape 7 : Préparer les fichiers à déployer
+      - name: 🧹 Préparer les fichiers pour le déploiement
         run: |
           mkdir deploy
-          cp -R .next public package.json next.config.mjs deploy/
-          cp -R node_modules deploy/node_modules || echo "node_modules non inclus"
-          echo "Fichiers prêts pour le déploiement"
+          cp -R .next public package.json next.config.mjs prisma deploy/
+          echo "✅ Fichiers préparés pour le déploiement"
 
-      # Étape 7 : Déploiement FTP vers cPanel
-      - name: 📡 Déploiement sur cPanel
+      # Étape 8 : Déploiement FTP vers cPanel
+      - name: 📡 Déploiement sur cPanel via FTP
         uses: SamKirkland/FTP-Deploy-Action@v4.3.4
         with:
           server: luxtechservices.com
           username: ${{ secrets.CPANEL_FTP_USERNAME }}
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          server-dir: /public_html/ # le répertoire distant (à adapter)
+          server-dir: /public_html/
           local-dir: ./deploy
           exclude: |
             **/.git*
