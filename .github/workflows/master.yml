@@ -6,8 +6,8 @@ on:
       - master # déploie automatiquement à chaque push sur master
 
 jobs:
-  deploy:
-    name: Build & Deploy Next.js vers cPanel
+  build-and-deploy:
+    name: Build & Deploy to cPanel
     runs-on: ubuntu-latest
 
     steps:
@@ -20,6 +20,7 @@ jobs:
         uses: actions/setup-node@v4
         with:
           node-version: 20
+          cache: 'npm'
 
       # Étape 3 : Installer les dépendances
       - name: 📥 Installation des dépendances
@@ -89,7 +90,7 @@ jobs:
           server: luxtechservices.com
           username: ${{ secrets.CPANEL_FTP_USERNAME }}
           password: ${{ secrets.CPANEL_FTP_PASSWORD }}
-          server-dir: /public_html/
+          server-dir: /myapp/
           local-dir: ./deploy/
           exclude: |
             **/.git*
