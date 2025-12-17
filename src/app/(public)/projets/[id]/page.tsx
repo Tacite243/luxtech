@@ -4,6 +4,10 @@ import HearoInterrior from "@/components/heroInterior";
 import ProjectDetailsContent from "@/components/ProjectDetailsContent";
 import { detailedProjectsData } from "@/lib/project-data";
 
+interface ProjectDetailsPageProps {
+  params: { id: string };
+}
+
 // Cette fonction pré-génère toutes les pages de produits au moment du build
 export async function generateStaticParams() {
   const products = await prisma.product.findMany({ select: { id: true } });
@@ -15,11 +19,9 @@ function getProjectById(id: number) {
   return detailedProjectsData.find((project) => project.id === id);
 }
 
-export default function ProjectDetailsPage({
+export default async function ProjectDetailsPage({
   params,
-}: {
-  params: { id: string };
-}) {
+}: ProjectDetailsPageProps) {
   // Convertir l'ID de la chaîne de caractères de l'URL en nombre
   const projectId = parseInt(params.id, 10);
   const project = getProjectById(projectId);
