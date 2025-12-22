@@ -2,6 +2,8 @@ import HearoInterrior from "@/components/heroInterior";
 import StoreContent from "@/components/StoreContent";
 import { prisma } from "@/lib/prisma";
 
+export const dynamic = "force-dynamic";
+
 interface StorePageProps {
   searchParams: {
     category?: string;

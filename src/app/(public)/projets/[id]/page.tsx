@@ -1,20 +1,35 @@
-import { prisma } from "@/lib/prisma";
+// import { prisma } from "@/lib/prisma";
 import { notFound } from "next/navigation";
 import HearoInterrior from "@/components/heroInterior";
 import ProjectDetailsContent from "@/components/ProjectDetailsContent";
 import { detailedProjectsData } from "@/lib/project-data";
 
 interface ProjectDetailsPageProps {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-// Cette fonction pré-génère toutes les pages de produits au moment du build
+// 1. On autorise Next.js à essayer de générer des pages même si elles ne sont pas pré-générées
+export const dynamicParams = true;
+
 export async function generateStaticParams() {
-  const products = await prisma.product.findMany({ select: { id: true } });
-  return products.map((product) => ({ id: product.id }));
+  // Option A : Utiliser les données locales pour être sûr que le build passe
+  // même si la base de données est vide.
+  return detailedProjectsData.map((project) => ({
+    id: project.id.toString(),
+  }));
+
+  /* 
+  // Option B : Si vous voulez vraiment utiliser la DB, gardez le try/catch 
+  // mais retournez un tableau vide pour ne pas bloquer le build.
+  try {
+    const products = await prisma.product.findMany({ select: { id: true } });
+    return products.map((product) => ({ id: product.id.toString() }));
+  } catch (error) {
+    return []; 
+  }
+  */
 }
 
-// Fonction pour récupérer un projet par son ID
 function getProjectById(id: number) {
   return detailedProjectsData.find((project) => project.id === id);
 }
@@ -22,11 +37,11 @@ function getProjectById(id: number) {
 export default async function ProjectDetailsPage({
   params,
 }: ProjectDetailsPageProps) {
-  // Convertir l'ID de la chaîne de caractères de l'URL en nombre
-  const projectId = parseInt(params.id, 10);
+  const resolvedParams = await params;
+  const projectId = parseInt(resolvedParams.id, 10);
+
   const project = getProjectById(projectId);
 
-  // Si aucun projet n'est trouvé, afficher une page 404
   if (!project) {
     notFound();
   }
@@ -41,7 +56,6 @@ export default async function ProjectDetailsPage({
           { name: project.title },
         ]}
       />
-
       <ProjectDetailsContent project={project} />
     </>
   );
